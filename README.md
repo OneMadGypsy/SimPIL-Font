@@ -65,6 +65,7 @@ ttf = SimPILFont.instance('Verdana 32 bold')
   FONTMAP(fontdir="other/fonts/")
   ```
 * The underlying `FONTMAP` dict singleton is formatted like the object below:
+  
   ```json
   {
       "Family Name": {
@@ -84,6 +85,7 @@ ttf = SimPILFont.instance('Verdana 32 bold')
   }
   ```
   This is a generalization of what the backend does when you request a font
+  
   ```python3
   family = 'DejaVu Sans'
   face   = 'condensed bold oblique'
@@ -91,23 +93,27 @@ ttf = SimPILFont.instance('Verdana 32 bold')
   ttf    = ImageFont.truetype(path, ...)
   ```
 * If you request a face that does not exist, `"regular"` will be attempted else `"book"` will be attempted else the first face in the family. You can check the faces available for a font with the `.faces` property.
+  
   ```python3
   sf = SimPILFont('DejaVu Sans 32 extra light') #should be extralight
   print(sf.faces) # ('bold', 'bold oblique', 'extralight', 'oblique', 'book', 'condensed bold', 'condensed bold oblique', 'condensed oblique', 'condensed')
   print(sf)       # DejaVu Sans 32 book
   ```
 * `encoding` can be set in the constructor or `.instance` method. The default is `"unic"`. The encoding must be valid or it will default to `"unic"`. For information on valid encodings see: https://pillow.readthedocs.io/en/stable/reference/ImageFont.html#PIL.ImageFont.truetype
+  
   ```python3
   sf  = SimPILFont('Symbol 16', encoding='symb')
   ttf = SimPILFont.instance('Symbol 16', encoding='symb')
   ```
 * tkinter font format is barely supported - fails if `overstrike` or `underline` are included
+  
   ```python3
   sf  = SimPILFont('{Times New Roman} 32 bold')
   ttf = SimPILFont.instance('{Times New Roman} 32 bold')
   ```
 * If you are on windows, `C:/Windows/Fonts` directory is automatically loaded. If that's all you need it is unnecessary to call `FONTMAP`. There is a spot reserved for "Linux" and "Darwin" to do the same thing, but I didn't know the directories to use, and have no way to test them. If you are on one of those systems, adjust [`FONTDIR`](https://github.com/OneMadGypsy/SimPIL-Font/blob/main/simpilfont.py#L27) accordingly.
-* There are some properties and staticmethods that weren't covered in this README. The code is not even 200 lines. You can browse it and easily figure out the stuff that was skipped. It's mostly stuff like `.family`, `.size`, `.face`, etc.. Printing a `SimPILFont`instance can tell you all of that in one shot.
+* There are some properties and staticmethods that weren't covered in this README. The code is not even 200 lines. You can browse it and easily figure out the stuff that was skipped. It's mostly stuff like `.family`, `.size`, `.face`, etc.. Printing a `SimPILFont` instance can tell you all of that in one shot.
+  
   ```python3
   print(sf) # Times New Roman 32 bold
   ```
