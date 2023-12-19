@@ -35,10 +35,21 @@ from simpilfont import SimPILFont, FONTMAP
 
 FONTMAP(fontdir='path/to/fonts')
 
-ttf      = SimPILFont('Verdana 32')
-ttf.font = 'bold'     # Verdana 32 bold
-ttf.font = 'Consolas' # Consolas 32 bold
-ttf.font = '18'       # Consolas 18 bold
+ttf      = SimPILFont('Consolas 32')
+ttf.font = 'bold'        # Consolas 32 bold
+ttf.font = 'Verdana'     # Verdana 32 bold
+ttf.font = '18 italic'   # Verdana 18 italic
+ttf.font = 'bold italic' # Verdana 18 bold italic
+ttf.font = '12'          # Verdana 12 bold italic
+```
+
+ImageFont without SimPILFont instance
+```python3
+from simpilfont import SimPILFont, FONTMAP
+
+FONTMAP(fontdir='path/to/fonts')
+
+ttf = SimPILFont.instance('Verdana 32 bold')
 ```
 
 
