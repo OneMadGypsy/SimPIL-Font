@@ -6,6 +6,7 @@ import json, copy, platform
 
 def __fontlib(fontmap:dict, family:str='', fontdir:str='', dumpmap:bool=False) -> dict|set:
     if fontdir or (not fontmap) or (not family):
+        fontdir = fontdir or FONTDIR
         for fn in iglob(fr'{fontdir}**/*.ttf', recursive=True):
             try:
                 ttf = ImageFont.truetype(font=fn)
