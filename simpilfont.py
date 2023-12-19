@@ -12,10 +12,11 @@ def __fontlib(fontmap:dict, family:str='', fontdir:str='', dumpmap:bool=False) -
                 ttf = ImageFont.truetype(font=fn)
             except: ...
             else:
-                name, face          = ttf.getname() 
-                face                = face.lower().replace(' ', '')
-                fontmap[name]       = fontmap.get(name, {})
-                fontmap[name][face] = fn
+                name, face            = ttf.getname() 
+                face                  = face.lower()
+                fontmap[name]         = fontmap.get(name, {'keys':[]})
+                fontmap[name]['keys'].append(face)
+                fontmap[name][face.replace(' ', '')] = fn
         
     if dumpmap:
         with open('fonts.json', 'w') as f:
@@ -93,7 +94,7 @@ class SimPILFont:
         
     @property
     def faces(self) -> tuple:
-        return tuple(FONTMAP(self._family))
+        return tuple(FONTMAP(self._family).get('keys', []))
         
     @property
     def face(self) -> str:
