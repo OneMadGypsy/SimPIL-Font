@@ -73,13 +73,13 @@ ttf = SimPILFont.instance('Verdana 32 bold')
       },
       "DejaVu Sans": {
         "bold": "c:/Windows/Fonts\\DejaVuSans-Bold.ttf",
-        "bold oblique": "c:/Windows/Fonts\\DejaVuSans-BoldOblique.ttf",
+        "boldoblique": "c:/Windows/Fonts\\DejaVuSans-BoldOblique.ttf",
         "extralight": "c:/Windows/Fonts\\DejaVuSans-ExtraLight.ttf",
         "oblique": "c:/Windows/Fonts\\DejaVuSans-Oblique.ttf",
         "book": "c:/Windows/Fonts\\DejaVuSans.ttf",
-        "condensed bold": "c:/Windows/Fonts\\DejaVuSansCondensed-Bold.ttf",
-        "condensed bold oblique": "c:/Windows/Fonts\\DejaVuSansCondensed-BoldOblique.ttf",
-        "condensed oblique": "c:/Windows/Fonts\\DejaVuSansCondensed-Oblique.ttf",
+        "condensedbold": "c:/Windows/Fonts\\DejaVuSansCondensed-Bold.ttf",
+        "condensedboldoblique": "c:/Windows/Fonts\\DejaVuSansCondensed-BoldOblique.ttf",
+        "condensedoblique": "c:/Windows/Fonts\\DejaVuSansCondensed-Oblique.ttf",
         "condensed": "c:/Windows/Fonts\\DejaVuSansCondensed.ttf"
       }
   }
@@ -89,14 +89,14 @@ ttf = SimPILFont.instance('Verdana 32 bold')
   ```python3
   family = 'DejaVu Sans'
   face   = 'condensed bold oblique'
-  path   = FONTMAP(family)[face]
+  path   = FONTMAP(family)[face.replace(' ', '')]
   ttf    = ImageFont.truetype(path, ...)
   ```
 * If you request a face that does not exist, `"regular"` will be attempted else `"book"` will be attempted else the first face in the family. You can check the faces available for a font with the `.faces` property.
   
   ```python3
-  sf = SimPILFont('DejaVu Sans 32 extra light') #should be extralight
-  print(sf.faces) # ('bold', 'bold oblique', 'extralight', 'oblique', 'book', 'condensed bold', 'condensed bold oblique', 'condensed oblique', 'condensed')
+  sf = SimPILFont('DejaVu Sans 32 light italic') #should be extralight
+  print(sf.faces) # ('bold', 'boldoblique', 'extralight', 'oblique', 'book', 'condensedbold', 'condensedboldoblique', 'condensedoblique', 'condensed')
   print(sf)       # DejaVu Sans 32 book
   ```
 * `encoding` can be set in the constructor or `.instance` method. The default is `"unic"`. The encoding must be valid or it will default to `"unic"`. For information on valid encodings see: https://pillow.readthedocs.io/en/stable/reference/ImageFont.html#PIL.ImageFont.truetype
