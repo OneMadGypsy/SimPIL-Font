@@ -109,6 +109,7 @@ print(sf) # Consolas 32 bold
   ```
 * tkinter font format is barely supported - fails if `overstrike` or `underline` are included
   ```python3
+  sf  = SimPILFont('{Times New Roman} 32 bold')
   ttf = SimPILFont.instance('{Times New Roman} 32 bold')
   ```
 * If you are on windows, `C:/Windows/Fonts` directory is automatically loaded. If that's all you need it is unnecessary to call `FONTMAP`. There is a spot reserved for "Linux" and "Darwin" to do the same thing, but I didn't know the directories to use, and have no way to test them. If you are on one of those systems, adjust [`FONTDIR`](https://github.com/OneMadGypsy/SimPIL-Font/blob/main/simpilfont.py#L27) accordingly.
