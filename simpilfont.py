@@ -3,7 +3,7 @@ from glob      import iglob
 from functools import partial
 import os, json, copy, platform
 
-def __fontlib(fontmap:dict, fontdir:str, family:str='') -> dict|set:
+def __fontlib(fontmap:dict, fontdir:str, family:str='', dumpmap:bool=False) -> dict|set:
     if (not fontmap) or (not family):
         for fn in iglob(f'{fontdir}**/*.ttf', recursive=True):
             try:
@@ -15,10 +15,10 @@ def __fontlib(fontmap:dict, fontdir:str, family:str='') -> dict|set:
                 fontmap[name]       = fontmap.get(name, {})
                 fontmap[name][face] = os.path.join(fontdir, fn)
         
-        if DUMPMAP:
-            with open('fonts.json', 'w') as f:
-                f.write(json.dumps(fontmap, indent=4))
-                
+    if dumpmap:
+        with open('fonts.json', 'w') as f:
+            f.write(json.dumps(fontmap, indent=4))
+            
     return copy.deepcopy(fontmap.get(family, {}))
     
     
@@ -31,7 +31,6 @@ FONTDIR = {
 #singleton----------------------v
 FONTMAP    = partial(__fontlib, {})    #call this if you want to specify the font directory
 FONTDIRMAP = partial(FONTMAP, FONTDIR) #call this to automatically use the FONTDIR constant
-DUMPMAP    = False
 
 
 class SimPILFont:
