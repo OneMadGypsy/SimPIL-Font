@@ -9,13 +9,13 @@ FONTMAP(fontdir='path/to/fonts')
 
 text    = "Hello World"
 
-ttf     = SimPILFont('ABeeZee 32 regular')
-x,y,w,h = ttf.bbox(text)
+sf      = SimPILFont('ABeeZee 32 regular')
+x,y,w,h = sf.bbox(text)
 
 img  = Image.new("RGB", (w-x, h-y), color="black")
 dctx = ImageDraw.Draw(img)
 
-dctx.text((-x, -y), text, font=ttf.font, fill="white")
+dctx.text((-x, -y), text, font=sf.font, fill="white")
 
 img.show()
 del dctx
@@ -58,7 +58,7 @@ from simpilfont import SimPILFont, FONTMAP
 
 FONTMAP(fontdir='path/to/fonts')
 
-ttf = SimPILFont.instance('{Times New Roman} 32 bold')
+sf = SimPILFont.instance('{Times New Roman} 32 bold')
 ```
 
 To string
@@ -67,12 +67,18 @@ from simpilfont import SimPILFont, FONTMAP
 
 FONTMAP(fontdir='path/to/fonts')
 
-ttf = SimPILFont('Consolas 32 bold')
+sf = SimPILFont('Consolas 32 bold')
 print(ttf) # Consolas 32 bold
 ```
 
 ## Facts
 * You can call `FONTMAP` with a new `fontdir` as many times as you like. All the new font metadata will be pooled with the existing font data.
+  
+  ```python3
+  FONTMAP(fontdir="these/fonts/")
+  FONTMAP(fontdir="those/fonts/")
+  FONTMAP(fontdir="other/fonts/")
+  ```
 * The underlying `FONTMAP` dict singleton has the below structure:
   ```json
   {
@@ -99,11 +105,16 @@ print(ttf) # Consolas 32 bold
   path   = FONTMAP(family)[face]
   ttf    = ImageFont.truetype(path, ...)
   ```
-* `encoding` can be set in the constructor or `.instance` method. The default is `"unic"`. The encoding must be valid or it will default to `"unic"`. For information on valid encodings see: https://pillow.readthedocs.io/en/stable/reference/ImageFont.html#PIL.ImageFont.truetype
-* If you are on windows, `C:/Windows/Fonts` directory is automatically loaded. If that's all you need it is unnecessary to call `FONTMAP`. There is a spot reserved for "Linux" and "Darwin" to do the same thing, but I didn't know the directories to use, and have no way to test them. If you are on one of those systems, adjust [`FONTDIR`](https://github.com/OneMadGypsy/SimPIL-Font/blob/main/simpilfont.py#L27) accordingly.
 * If you request a face that does not exist, `"regular"` will be attempted else `"book"` will be attempted else the first face in the family. You can check the faces available for a font with the `.faces` property.
   ```python3
-  ttf = SimPILFont('Consolas 32 bold')
+  sf = SimPILFont('Consolas 32 bold')
   print(ttf.faces) # ('regular', 'bold', 'italic', 'bold italic')
   ```
+* `encoding` can be set in the constructor or `.instance` method. The default is `"unic"`. The encoding must be valid or it will default to `"unic"`. For information on valid encodings see: https://pillow.readthedocs.io/en/stable/reference/ImageFont.html#PIL.ImageFont.truetype
+  ```python3
+  sf  = SimPILFont('Symbol', encoding='symb')
+  ttf = SimPILFont.instance('Symbol', encoding='symb')
+  ```
+* If you are on windows, `C:/Windows/Fonts` directory is automatically loaded. If that's all you need it is unnecessary to call `FONTMAP`. There is a spot reserved for "Linux" and "Darwin" to do the same thing, but I didn't know the directories to use, and have no way to test them. If you are on one of those systems, adjust [`FONTDIR`](https://github.com/OneMadGypsy/SimPIL-Font/blob/main/simpilfont.py#L27) accordingly.
+
 
