@@ -29,7 +29,7 @@ FONTDIR = {
     #"Linux"  : ""
 }.get(platform.system(), '')
 
-#singleton----------------------v
+#singleton-------------------v
 FONTMAP = partial(__fontlib, {})
 FONTMAP(fontdir=FONTDIR)
 
