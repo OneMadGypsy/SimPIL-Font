@@ -1,11 +1,12 @@
 from PIL       import ImageFont
 from glob      import iglob
 from functools import partial
-import os, json, copy, platform
+import json, copy, platform
 
-def __fontlib(fontmap:dict, fontdir:str, family:str='', dumpmap:bool=False) -> dict|set:
-    if (not fontmap) or (not family):
-        for fn in iglob(f'{fontdir}**/*.ttf', recursive=True):
+
+def __fontlib(fontmap:dict, family:str='', fontdir:str='', dumpmap:bool=False) -> dict|set:
+    if fontdir or (not fontmap) or (not family):
+        for fn in iglob(fr'{fontdir}**/*.ttf', recursive=True):
             try:
                 ttf = ImageFont.truetype(font=fn)
             except: ...
@@ -13,7 +14,7 @@ def __fontlib(fontmap:dict, fontdir:str, family:str='', dumpmap:bool=False) -> d
                 name, face          = ttf.getname() 
                 face                = face.lower()
                 fontmap[name]       = fontmap.get(name, {})
-                fontmap[name][face] = os.path.join(fontdir, fn)
+                fontmap[name][face] = fn
         
     if dumpmap:
         with open('fonts.json', 'w') as f:
@@ -29,8 +30,8 @@ FONTDIR = {
 }.get(platform.system(), '')
 
 #singleton----------------------v
-FONTMAP    = partial(__fontlib, {})    #call this if you want to specify the font directory
-FONTDIRMAP = partial(FONTMAP, FONTDIR) #call this to automatically use the FONTDIR constant
+FONTMAP = partial(__fontlib, {})
+FONTMAP(fontdir=FONTDIR)
 
 
 class SimPILFont:
@@ -56,7 +57,7 @@ class SimPILFont:
         
     #parse font string and return parts
     @staticmethod      
-    def metadata(font:str, fmap:callable=FONTDIRMAP) -> tuple:
+    def metadata(font:str) -> tuple:
         font = font.replace('{','').replace('}','') #for tk style font str
         fmly, face, size = [], [], 0
         
@@ -72,11 +73,11 @@ class SimPILFont:
     #get an ImageFont without a Font instance
     #partial font requests are not supported
     @staticmethod  
-    def instance(font:str, fmap:callable=FONTDIRMAP, encoding:str='unic') -> ImageFont.FreeTypeFont:
-        family, face, size = SimPILFont.metadata(font, fmap)
+    def instance(font:str, encoding:str='unic') -> ImageFont.FreeTypeFont:
+        family, face, size = SimPILFont.metadata(font)
         
         encoding = encoding if encoding in ENCODINGS else 'unic'
-        faces    = fmap.get(family, {})
+        faces    = FONTMAP(family)
         face     = SimPILFont.bestface(face, faces)
         path     = faces.get(face, '')
         
@@ -120,19 +121,18 @@ class SimPILFont:
     #    ft.font = 'Consolas bold' # -> "Consolas 22 bold"
     @font.setter
     def font(self, font:str) -> None:
-        family, face, size = SimPILFont.metadata(font, self._map)
+        family, face, size = SimPILFont.metadata(font)
         
         self._family = family or getattr(self, '_family', 'Arial')
         self._size   = size   or getattr(self, '_size'  , 12)
-        self._faces  = self._map(self._family)
+        self._faces  = FONTMAP(self._family)
         self._face   = SimPILFont.bestface(face or getattr(self, '_face', ''), self._faces)
         self._path   = self._faces.get(self._face, '')
         self._font   = ImageFont.truetype(self._path, self._size, encoding=self._encoding)
         
     ## DUNDER
 
-    def __init__(self, font:str, fmap:callable=FONTDIRMAP, encoding='unic'):
-       self._map     = fmap
+    def __init__(self, font:str, encoding='unic'):
        self.encoding = encoding
        self.font     = font
        
