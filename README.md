@@ -6,12 +6,15 @@ from simpilfont import SimPILFont, FONTMAP
 
 FONTMAP(fontdir='path/to/fonts')
 
-ttf  = SimPILFont('Kenia 16 regular')
+text    = "Hello World"
 
-img  = Image.new("RGB", (256, 256), color="white")
+ttf     = SimPILFont('ABeeZee 32 regular')
+x,y,w,h = ttf.bbox(text)
 
+img  = Image.new("RGB", (w-x, h-y), color="black")
 dctx = ImageDraw.Draw(img)
-dctx.text((0, 0), 'Hello World', font=ttf.font, fill="black")
+
+dctx.text((-x, -y), text, font=ttf.font, fill="white")
 
 img.show()
 del dctx
