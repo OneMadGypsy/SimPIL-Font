@@ -79,7 +79,7 @@ print(ttf) # Consolas 32 bold
   FONTMAP(fontdir="those/fonts/")
   FONTMAP(fontdir="other/fonts/")
   ```
-* The underlying `FONTMAP` dict singleton has the below structure:
+* The underlying `FONTMAP` dict singleton is formatted like the object below:
   ```json
   {
       "Family Name": {
