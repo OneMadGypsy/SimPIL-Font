@@ -22,7 +22,7 @@ del dctx
 ```
 
 ## Extra
-Dump fontmap to "fonts.json"
+Dump fontmap to fonts.json
 ```python3
 from simpilfont import SimPILFont, FONTMAP
 
