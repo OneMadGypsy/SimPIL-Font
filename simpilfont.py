@@ -13,7 +13,7 @@ def __fontlib(fontmap:dict, family:str='', fontdir:str='', dumpmap:bool=False) -
             except: ...
             else:
                 name, face          = ttf.getname() 
-                face                = face.lower()
+                face                = face.lower().replace(' ', '')
                 fontmap[name]       = fontmap.get(name, {})
                 fontmap[name][face] = fn
         
@@ -46,6 +46,7 @@ class SimPILFont:
     @staticmethod
     def bestface(face:str, faces:dict) -> str:
         keys = faces.keys()
+        face = face.replace(' ', '')
     
         for dflt in ('regular', 'book'):
             if dflt in keys: break
@@ -80,9 +81,7 @@ class SimPILFont:
         family, face, size = SimPILFont.metadata(font)
         
         encoding = encoding if encoding in ENCODINGS else 'unic'
-        faces    = FONTMAP(family)
-        face     = SimPILFont.bestface(face, faces)
-        path     = faces.get(face, '')
+        path     = faces.get(SimPILFont.bestface(face, FONTMAP(family or 'Arial')), '')
         
         return ImageFont.truetype(path, size or 12, encoding=encoding)
         
@@ -133,8 +132,8 @@ class SimPILFont:
         self._family = family or getattr(self, '_family', 'Arial')
         self._size   = size   or getattr(self, '_size'  , 12)
         self._faces  = FONTMAP(self._family)
-        self._face   = SimPILFont.bestface(face or getattr(self, '_face', ''), self._faces)
-        self._path   = self._faces.get(self._face, '')
+        self._face   = face or getattr(self, '_face', '')
+        self._path   = self._faces.get(SimPILFont.bestface(self._face, self._faces), '')
         self._font   = ImageFont.truetype(self._path, self._size, encoding=self._encoding)
         
     ## DUNDER
