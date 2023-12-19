@@ -73,6 +73,31 @@ print(ttf) # Consolas 32 bold
 
 ## Facts
 * You can call `FONTMAP` with a new `fontdir` as many times as you like. All the new font metadata will be added to what already exists.
+* the underlying fontmap singleton has the below structure
+  ```json
+  {
+      "Family Name": {
+          "face": "path/to/this_face.ttf",
+      },
+      "DejaVu Sans": {
+        "bold": "c:/Windows/Fonts\\DejaVuSans-Bold.ttf",
+        "bold oblique": "c:/Windows/Fonts\\DejaVuSans-BoldOblique.ttf",
+        "extralight": "c:/Windows/Fonts\\DejaVuSans-ExtraLight.ttf",
+        "oblique": "c:/Windows/Fonts\\DejaVuSans-Oblique.ttf",
+        "book": "c:/Windows/Fonts\\DejaVuSans.ttf",
+        "condensed bold": "c:/Windows/Fonts\\DejaVuSansCondensed-Bold.ttf",
+        "condensed bold oblique": "c:/Windows/Fonts\\DejaVuSansCondensed-BoldOblique.ttf",
+        "condensed oblique": "c:/Windows/Fonts\\DejaVuSansCondensed-Oblique.ttf",
+        "condensed": "c:/Windows/Fonts\\DejaVuSansCondensed.ttf"
+      }
+  }
+  ```
+  ```python3
+  #this entire system is little more than a directory scraper that creates a dict of font metadata,
+  #and upon request puts the respective results of `FONTMAP('Family Name')['face']` into `ImageFont.truetype` for you
+  #there are a few other bells and whistles, but essentially it's just a lookup table
+  ttf =  ImageFont.truetype(FONTMAP('DejaVu Sans')['condensed bold oblique'], ...)
+  ```
 * `encoding` can be set in the constructor or `.instance` method. The default is `"unic"`. The encoding must be valid or it will default to `"unic"`. For information on valid encodings see: https://pillow.readthedocs.io/en/stable/reference/ImageFont.html#PIL.ImageFont.truetype
 * If you are on windows, `C:/Windows/Fonts` directory is automatically loaded. If that's all you need it is unnecessary to call `FONTMAP`. There is a spot reserved for "Linux" and "Darwin" to do the same thing, but I didn't know the directories to use, and have no way to test them. If you are on one of those systems, adjust [`FONTDIR`](https://github.com/OneMadGypsy/SimPIL-Font/blob/main/simpilfont.py#L27) accordingly. 
 
