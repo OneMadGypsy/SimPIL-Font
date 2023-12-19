@@ -45,14 +45,16 @@ class SimPILFont:
     #  the face you requested else "regular" else the first face in keys
     @staticmethod
     def bestface(face:str, faces:dict) -> str:
-        dflt = 'regular'
-        if faces and (keys := faces.keys()): 
-            if not dflt in keys:
-                dflt = next(fc for fc in keys)
+        keys = faces.keys()
+    
+        for dflt in ('regular', 'book'):
+            if dflt in keys: break
+        else: dflt = next(fc for fc in keys)
+        
+        if faces and keys: 
             if not face in keys:
                 face = dflt
-        else:
-            face = ''
+        else: face = ''
                 
         return face
         
@@ -89,6 +91,10 @@ class SimPILFont:
     @property
     def family(self) -> str:
         return self._family
+        
+    @property
+    def faces(self) -> tuple:
+        return tuple(FONTMAP(self._family))
         
     @property
     def face(self) -> str:
