@@ -72,7 +72,7 @@ print(ttf) # Consolas 32 bold
 ```
 
 ## Facts
-* You can call `FONTMAP` with a new `fontdir` as many times as you like. All the new font metadata will be added to what already exists.
+* You can call `FONTMAP` with a new `fontdir` as many times as you like. All the new font metadata will be pooled with the existing font data.
 * The underlying `FONTMAP` dict singleton has the below structure:
   ```json
   {
