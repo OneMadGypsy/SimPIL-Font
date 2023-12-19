@@ -35,12 +35,12 @@ from simpilfont import SimPILFont, FONTMAP
 
 FONTMAP(fontdir='path/to/fonts')
 
-ttf      = SimPILFont('Consolas 32')
-ttf.font = 'bold'        # Consolas 32 bold
-ttf.font = 'Verdana'     # Verdana 32 bold
-ttf.font = '18 italic'   # Verdana 18 italic
-ttf.font = 'bold italic' # Verdana 18 bold italic
-ttf.font = '12'          # Verdana 12 bold italic
+sf      = SimPILFont('Consolas 32')
+sf.font = 'bold'        # Consolas 32 bold
+sf.font = 'Verdana'     # Verdana 32 bold
+sf.font = '18 italic'   # Verdana 18 italic
+sf.font = 'bold italic' # Verdana 18 bold italic
+sf.font = '12'          # Verdana 12 bold italic
 ```
 
 ImageFont instance without SimPILFont instance
@@ -58,7 +58,7 @@ from simpilfont import SimPILFont, FONTMAP
 
 FONTMAP(fontdir='path/to/fonts')
 
-sf = SimPILFont.instance('{Times New Roman} 32 bold')
+ttf = SimPILFont.instance('{Times New Roman} 32 bold')
 ```
 
 To string
@@ -68,7 +68,7 @@ from simpilfont import SimPILFont, FONTMAP
 FONTMAP(fontdir='path/to/fonts')
 
 sf = SimPILFont('Consolas 32 bold')
-print(ttf) # Consolas 32 bold
+print(sf) # Consolas 32 bold
 ```
 
 ## Facts
