@@ -43,7 +43,7 @@ ttf.font = 'bold italic' # Verdana 18 bold italic
 ttf.font = '12'          # Verdana 12 bold italic
 ```
 
-ImageFont without SimPILFont instance
+ImageFont instance without SimPILFont instance
 ```python3
 from simpilfont import SimPILFont, FONTMAP
 
