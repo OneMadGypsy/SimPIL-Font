@@ -22,14 +22,14 @@ del dctx
 ```
 
 ## Extra
-dump fontmap to "fonts.json"
+Dump fontmap to "fonts.json"
 ```python3
 from simpilfont import SimPILFont, FONTMAP
 
 FONTMAP(fontdir='path/to/fonts', dumpmap=True)
 ```
 
-partial font changes
+Partial font changes
 ```python3
 from simpilfont import SimPILFont, FONTMAP
 
@@ -50,6 +50,15 @@ from simpilfont import SimPILFont, FONTMAP
 FONTMAP(fontdir='path/to/fonts')
 
 ttf = SimPILFont.instance('Verdana 32 bold')
+```
+
+Accepts tkinter font format - but will fail if `overstrike` or `underline` are included
+```python3
+from simpilfont import SimPILFont, FONTMAP
+
+FONTMAP(fontdir='path/to/fonts')
+
+ttf = SimPILFont.instance('{Times New Roman} 32 bold')
 ```
 
 
