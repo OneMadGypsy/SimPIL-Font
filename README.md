@@ -88,7 +88,7 @@ print(sf) # Consolas 32 bold
       "DejaVu Sans": {
         "bold": "c:/Windows/Fonts\\DejaVuSans-Bold.ttf",
         "bold oblique": "c:/Windows/Fonts\\DejaVuSans-BoldOblique.ttf",
-        "extralight": "c:/Windows/Fonts\\DejaVuSans-ExtraLight.ttf", //you may expect a space in the key that isn't actually there
+        "extralight": "c:/Windows/Fonts\\DejaVuSans-ExtraLight.ttf",
         "oblique": "c:/Windows/Fonts\\DejaVuSans-Oblique.ttf",
         "book": "c:/Windows/Fonts\\DejaVuSans.ttf",
         "condensed bold": "c:/Windows/Fonts\\DejaVuSansCondensed-Bold.ttf",
