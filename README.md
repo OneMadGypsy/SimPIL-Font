@@ -1,135 +1,157 @@
-# SimPIL-Font
-simplify loading remote fonts with PIL
+from PIL       import ImageFont
+from glob      import iglob
+from functools import partial
+import json, copy, platform
 
-## Basic Usage
-```python3
-from simpilfont import SimPILFont, FONTMAP
 
-FONTMAP(fontdir='path/to/fonts')
-
-text    = "Hello World"
-
-sf      = SimPILFont('ABeeZee 32')
-x,y,w,h = sf.bbox(text)
-
-img  = Image.new("RGB", (w-x, h-y), color="black")
-dctx = ImageDraw.Draw(img)
-
-dctx.text((-x, -y), text, font=sf.font, fill="white")
-
-img.show()
-del dctx
-```
-
-## Extra
-Dump fontmap to `./fonts.json`. 
-> The below example is also setting `fontdir`, but that isn't required if fonts are already loaded.
-> The dump will be the entire dict, including the new font data from `fontdir` (if used).
-> The resulting `fonts.json` is never used with any part of the font system. It's only purpose is to be a convenience if you needed a hard-copy.
-
-```python3
-from simpilfont import SimPILFont, FONTMAP
-
-FONTMAP(fontdir='path/to/fonts', dumpmap=True)
-```
-
-Partial font changes
-```python3
-from simpilfont import SimPILFont, FONTMAP
-
-FONTMAP(fontdir='path/to/fonts')
-
-sf      = SimPILFont('Consolas 32') # Consolas 32 regular
-sf.font = 'bold'                    # Consolas 32 bold
-sf.font = 'Verdana'                 # Verdana 32 bold
-sf.font = '18 italic'               # Verdana 18 italic
-sf.font = 'bold italic'             # Verdana 18 bold italic
-sf.font = '12'                      # Verdana 12 bold italic
-```
-
-ImageFont instance without SimPILFont instance
-```python3
-from simpilfont import SimPILFont, FONTMAP
-
-FONTMAP(fontdir='path/to/fonts')
-
-ttf = SimPILFont.instance('Verdana 32 bold')
-```
-
-## Facts
-* You can call `FONTMAP` with a new `fontdir` as many times as you like. All the new font metadata will be pooled with the existing font data.
-  
-  ```python3
-  FONTMAP(fontdir="these/fonts/")
-  FONTMAP(fontdir="those/fonts/")
-  FONTMAP(fontdir="other/fonts/")
-  ```
-* The underlying `FONTMAP` dict singleton is formatted like the object below:
-  
-  ```json
-  {
-      "Family Name": {
-          "face": "path/to/this_face.ttf",
-      },
-      "DejaVu Sans": {
-        "bold": "c:/Windows/Fonts\\DejaVuSans-Bold.ttf",
-        "boldoblique": "c:/Windows/Fonts\\DejaVuSans-BoldOblique.ttf",
-        "extralight": "c:/Windows/Fonts\\DejaVuSans-ExtraLight.ttf",
-        "oblique": "c:/Windows/Fonts\\DejaVuSans-Oblique.ttf",
-        "book": "c:/Windows/Fonts\\DejaVuSans.ttf",
-        "condensedbold": "c:/Windows/Fonts\\DejaVuSansCondensed-Bold.ttf",
-        "condensedboldoblique": "c:/Windows/Fonts\\DejaVuSansCondensed-BoldOblique.ttf",
-        "condensedoblique": "c:/Windows/Fonts\\DejaVuSansCondensed-Oblique.ttf",
-        "condensed": "c:/Windows/Fonts\\DejaVuSansCondensed.ttf"
-    },
-  }
-  ```
-  This is a generalization of what the backend does when you request a font
-  
-  ```python3
-  family = 'DejaVu Sans'
-  face   = 'condensed bold oblique'
-  path   = FONTMAP(family)[face.replace(' ', '')]
-  ttf    = ImageFont.truetype(path, ...)
-  ```
-* If you request a face that does not exist, `"regular"` will be attempted else `"book"` will be attempted else the first face in the family. You can check the faces available for a font with the `.faces` property.
-  
-  ```python3
-  sf = SimPILFont('DejaVu Sans 32 light italic')
-  print(sf.faces) # ('bold', 'boldoblique', 'extralight', 'oblique', 'book', 'condensedbold', 'condensedboldoblique', 'condensedoblique', 'condensed')
-  print(sf)       # DejaVu Sans 32 book
-  ```
-* `encoding` can be set in the constructor or `.instance` method. The default is `"unic"`. The encoding must be valid or it will default to `"unic"`. For information on valid encodings see: https://pillow.readthedocs.io/en/stable/reference/ImageFont.html#PIL.ImageFont.truetype
-  
-  ```python3
-  sf  = SimPILFont('Symbol 16', encoding='symb')
-  ttf = SimPILFont.instance('Symbol 16', encoding='symb')
-  ```
-* tkinter font format is barely supported - fails if `overstrike` or `underline` are included
-  
-  ```python3
-  sf  = SimPILFont('{Times New Roman} 32 bold')
-  ttf = SimPILFont.instance('{Times New Roman} 32 bold')
-  ```
-* If you are on windows, `C:/Windows/Fonts` directory is automatically loaded. If that's all you need, it is unnecessary to call `FONTMAP`. There is a spot reserved for "Linux" and "Darwin" to do the same thing, but I didn't know the directories to use, and have no way to test them. If you are on one of those systems, adjust [`FONTDIR`](https://github.com/OneMadGypsy/SimPIL-Font/blob/main/simpilfont.py#L27) accordingly.
-  ```python3
-  #line 27 of simpilfont.py
-  FONTDIR = {
+def __fontlib(fontmap:dict, family:str='', fontdir:str='', dumpmap:bool=False) -> dict|set:
+    if fontdir or (not fontmap) or (not family):
+        fontdir = fontdir or FONTDIR
+        for fn in iglob(fr'{fontdir}**/*.ttf', recursive=True):
+            try:
+                ttf = ImageFont.truetype(font=fn)
+            except: ...
+            else:
+                name, face          = ttf.getname() 
+                face                = face.lower().replace(' ', '')
+                fontmap[name]       = fontmap.get(name, {})
+                fontmap[name][face] = fn
+        
+    if dumpmap:
+        with open('fonts.json', 'w') as f:
+            f.write(json.dumps(fontmap, indent=4))
+            
+    return copy.deepcopy(fontmap.get(family, {}))
+    
+    
+FONTDIR = {
     "Windows": "c:/Windows/Fonts/",
     #"Darwin" : "",
     #"Linux"  : ""
-  }.get(platform.system(), '')
-  ```
-* There are some properties and staticmethods that weren't covered in this README. The code is not even 200 lines. You can browse it and easily figure out the stuff that was skipped. It's mostly stuff like `.family`, `.size`, `.face`, etc.. Printing a `SimPILFont` instance can tell you all of that in one shot.
-  
-  ```python3
-  print(sf) # Times New Roman 32 bold
-  ```
-* `.font` and `.encoding` are the only properties with a setter. Setting `.encoding` will not update `.font`. 
-  
-  ```python3
-  #encoding after font has already been made
-  sf.encoding = "symb"
-  sf.font     = str(sf)
-  ```
+}.get(platform.system(), '')
 
+#singleton-------------------v
+FONTMAP = partial(__fontlib, {})
+FONTMAP(fontdir=FONTDIR)
+
+
+class SimPILFont:
+    #https://pillow.readthedocs.io/en/stable/reference/ImageFont.html#PIL.ImageFont.truetype
+    ENCODINGS = "unic", "symb", "DOB", "ADBE", "ADBC", "armn", "sjis", "gb", "big5", "ans", "joha", "lat1"
+
+    ## STATIC
+
+    #whichever one exists first:
+    #  the face you requested else "regular" else the first face in keys
+    @staticmethod
+    def bestface(face:str, faces:dict) -> str:
+        keys = faces.keys()
+        face = face.replace(' ', '')
+    
+        for dflt in ('regular', 'book'):
+            if dflt in keys: break
+        else: dflt = next(fc for fc in keys)
+        
+        if faces and keys: 
+            if not face in keys:
+                face = dflt
+        else: face = ''
+                
+        return face
+        
+    #parse font string and return parts
+    @staticmethod      
+    def metadata(font:str) -> tuple:
+        font = font.replace('{','').replace('}','') #for tk style font str
+        fmly, face, size = [], [], 0
+        
+        for part in font.split(' '):
+            if part.isdigit(): size = int(part)
+            else             : (face, fmly)[part != part.lower()].append(part)
+                
+        family = ' '.join(fmly)
+        face   = ' '.join(face)
+        
+        return family, face, size
+    
+    #get an ImageFont without a Font instance
+    #partial font requests are not supported
+    @staticmethod  
+    def instance(font:str, encoding:str='unic') -> ImageFont.FreeTypeFont:
+        family, face, size = SimPILFont.metadata(font)
+        
+        encoding = encoding if encoding in ENCODINGS else 'unic'
+        path     = faces.get(SimPILFont.bestface(face, FONTMAP(family or 'Arial')), '')
+        
+        return ImageFont.truetype(path, size or 12, encoding=encoding)
+        
+    ## PROPERTIES
+
+    @property
+    def family(self) -> str:
+        return self._family
+        
+    @property
+    def faces(self) -> tuple:
+        return tuple(FONTMAP(self._family))
+        
+    @property
+    def face(self) -> str:
+        return self._face
+        
+    @property
+    def size(self) -> int:
+        return self._size
+        
+    @property
+    def path(self) -> str|None:
+        return self._path
+        
+    @property
+    def font(self) -> ImageFont.FreeTypeFont:
+        return self._font
+        
+    @property
+    def encoding(self) -> str:
+        return self._encoding
+        
+    @encoding.setter
+    def encoding(self, enc:str) -> None:
+        self._encoding = enc if enc in SimPILFont.ENCODINGS else 'unic'
+        
+    #allow partial font requests
+    #ex:
+    #    ttf      = Font('Verdana 16 bold italic')
+    #    ttf.font = '18'            # -> "Verdana 18 bold italic"
+    #    ttf.font = '22 regular'    # -> "Verdana 22 regular"
+    #    ttf.font = 'Consolas bold' # -> "Consolas 22 bold"
+    @font.setter
+    def font(self, font:str) -> None:
+        family, face, size = SimPILFont.metadata(font)
+        
+        self._family = family or getattr(self, '_family', 'Arial')
+        self._size   = size   or getattr(self, '_size'  , 12)
+        self._faces  = FONTMAP(self._family)
+        self._face   = face or getattr(self, '_face', '')
+        self._path   = self._faces.get(SimPILFont.bestface(self._face, self._faces), '')
+        self._font   = ImageFont.truetype(self._path, self._size, encoding=self._encoding)
+        
+    ## DUNDER
+
+    def __init__(self, font:str, encoding='unic'):
+       self.encoding = encoding
+       self.font     = font
+       
+    def __str__(self) -> str:
+        return ' '.join((self._family, f'{self._size}', self._face))
+        
+    def __repr__(self) -> str:
+        return str(self)
+        
+    ## PUBLIC METHODS
+       
+    def bbox(self, text:str) -> tuple:
+        return self.font.getbbox(text)
+        
+    def offset(self, text:str) -> tuple:
+        return self.font.getoffset(text)
