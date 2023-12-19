@@ -108,7 +108,7 @@ print(sf) # Consolas 32 bold
 * If you request a face that does not exist, `"regular"` will be attempted else `"book"` will be attempted else the first face in the family. You can check the faces available for a font with the `.faces` property.
   ```python3
   sf = SimPILFont('Consolas 32 bold')
-  print(ttf.faces) # ('regular', 'bold', 'italic', 'bold italic')
+  print(sf.faces) # ('regular', 'bold', 'italic', 'bold italic')
   ```
 * `encoding` can be set in the constructor or `.instance` method. The default is `"unic"`. The encoding must be valid or it will default to `"unic"`. For information on valid encodings see: https://pillow.readthedocs.io/en/stable/reference/ImageFont.html#PIL.ImageFont.truetype
   ```python3
