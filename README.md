@@ -92,7 +92,7 @@ ttf = SimPILFont.instance('Verdana 32 bold')
   path   = FONTMAP(family)[face.replace(' ', '')]
   ttf    = ImageFont.truetype(path, ...)
   ```
-* If you request a face that does not exist, `"regular"` will be attempted else `"book"` will be attempted else the first face in the family. You can check the faces available for a font with the `.faces` property.
+* If you request a face that does not exist, `"regular"` will be attempted else `"book"` will be attempted else the first face in the family. You can check the available faces for a font with the `.faces` property.
   
   ```python3
   sf = SimPILFont('DejaVu Sans 32 light italic') #should be extralight
