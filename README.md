@@ -120,10 +120,15 @@ ttf = SimPILFont.instance('Verdana 32 bold')
     #"Linux"  : ""
   }.get(platform.system(), '')
   ```
-* There are some properties and staticmethods that weren't covered in this README. The code is not even 200 lines. You can browse it and easily figure out the stuff that was skipped. It's mostly stuff like `.family`, `.size`, `.face`, etc.. Printing a `SimPILFont` instance can tell you all of that in one shot.
+* There are some properties and staticmethods that weren't covered in this README. The code is not even 200 lines. You can browse it and easily figure out the stuff that was skipped. It's mostly stuff like `.family`, `.size`, `.face`, etc.. Printing a `SimPILFont` instance can tell you all of that in one shot. `.font` and `encoding` are the only properties with a setter. Setting `.encoding` will not update `.font`. 
   
   ```python3
+  #to string
   print(sf) # Times New Roman 32 bold
+
+  #encoding after font has already been made
+  sf.encoding = "symb"
+  sf.font     = str(sf)
   ```
 
 
