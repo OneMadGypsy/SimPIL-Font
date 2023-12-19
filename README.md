@@ -9,7 +9,7 @@ FONTMAP(fontdir='path/to/fonts')
 
 text    = "Hello World"
 
-sf      = SimPILFont('ABeeZee 32 regular')
+sf      = SimPILFont('ABeeZee 32')
 x,y,w,h = sf.bbox(text)
 
 img  = Image.new("RGB", (w-x, h-y), color="black")
@@ -39,12 +39,12 @@ from simpilfont import SimPILFont, FONTMAP
 
 FONTMAP(fontdir='path/to/fonts')
 
-sf      = SimPILFont('Consolas 32')
-sf.font = 'bold'        # Consolas 32 bold
-sf.font = 'Verdana'     # Verdana 32 bold
-sf.font = '18 italic'   # Verdana 18 italic
-sf.font = 'bold italic' # Verdana 18 bold italic
-sf.font = '12'          # Verdana 12 bold italic
+sf      = SimPILFont('Consolas 32') # Consolas 32 regular
+sf.font = 'bold'                    # Consolas 32 bold
+sf.font = 'Verdana'                 # Verdana 32 bold
+sf.font = '18 italic'               # Verdana 18 italic
+sf.font = 'bold italic'             # Verdana 18 bold italic
+sf.font = '12'                      # Verdana 12 bold italic
 ```
 
 ImageFont instance without SimPILFont instance
