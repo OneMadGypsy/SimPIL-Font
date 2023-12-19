@@ -22,7 +22,7 @@ del dctx
 ```
 
 ## Extra
-Dump fontmap to fonts.json
+Dump fontmap to `fonts.json`. The below example is also setting `fontdir`, but that isn't required if fonts are already loaded. The dump will be the entire dict, including the new font data from `fontdir` (if used).
 ```python3
 from simpilfont import SimPILFont, FONTMAP
 
