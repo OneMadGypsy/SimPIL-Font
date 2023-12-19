@@ -52,15 +52,6 @@ FONTMAP(fontdir='path/to/fonts')
 ttf = SimPILFont.instance('Verdana 32 bold')
 ```
 
-Accepts tkinter font format - but will fail if `overstrike` or `underline` are included
-```python3
-from simpilfont import SimPILFont, FONTMAP
-
-FONTMAP(fontdir='path/to/fonts')
-
-ttf = SimPILFont.instance('{Times New Roman} 32 bold')
-```
-
 To string
 ```python3
 from simpilfont import SimPILFont, FONTMAP
@@ -115,6 +106,10 @@ print(sf) # Consolas 32 bold
   ```python3
   sf  = SimPILFont('Symbol', encoding='symb')
   ttf = SimPILFont.instance('Symbol', encoding='symb')
+  ```
+* tkinter font format is barely supported - fails if `overstrike` or `underline` are included
+  ```python3
+  ttf = SimPILFont.instance('{Times New Roman} 32 bold')
   ```
 * If you are on windows, `C:/Windows/Fonts` directory is automatically loaded. If that's all you need it is unnecessary to call `FONTMAP`. There is a spot reserved for "Linux" and "Darwin" to do the same thing, but I didn't know the directories to use, and have no way to test them. If you are on one of those systems, adjust [`FONTDIR`](https://github.com/OneMadGypsy/SimPIL-Font/blob/main/simpilfont.py#L27) accordingly.
 
