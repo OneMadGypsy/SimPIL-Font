@@ -12,11 +12,11 @@ def __fontlib(fontmap:dict, family:str='', fontdir:str='', dumpmap:bool=False) -
                 ttf = ImageFont.truetype(font=fn)
             except: ...
             else:
-                name, face            = ttf.getname() 
-                face                  = face.lower()
-                fontmap[name]         = fontmap.get(name, {'keys':[]})
-                fontmap[name]['keys'].append(face)
+                name, face    = ttf.getname() 
+                face          = face.lower()
+                fontmap[name] = fontmap.get(name, {'keys':[]})
                 fontmap[name][face.replace(' ', '')] = fn
+                fontmap[name]['keys'].append(face)
         
     if dumpmap:
         with open('fonts.json', 'w') as f:
