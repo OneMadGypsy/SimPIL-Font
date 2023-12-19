@@ -1,11 +1,11 @@
 from PIL       import ImageFont
 from glob      import iglob
 from functools import partial
-import os, json, copy
+import os, json, copy, platform
 
 def __fontlib(fontmap:dict, fontdir:str, family:str='') -> dict|set:
     if (not fontmap) or (not family):
-        for fn in iglob(f'{fontdir}*.ttf'):
+        for fn in iglob(f'{fontdir}**/*.ttf', recursive=True):
             try:
                 ttf = ImageFont.truetype(font=fn)
             except: ...
@@ -21,8 +21,13 @@ def __fontlib(fontmap:dict, fontdir:str, family:str='') -> dict|set:
                 
     return copy.deepcopy(fontmap.get(family, {}))
     
+    
+FONTDIR = {
+    "Windows": "c:/Windows/Fonts/",
+    #"Darwin" : "",
+    #"Linux"  : ""
+}.get(platform.system(), '')
 
-FONTDIR    = 'c:\\Windows\\Fonts\\'
 #singleton----------------------v
 FONTMAP    = partial(__fontlib, {})    #call this if you want to specify the font directory
 FONTDIRMAP = partial(FONTMAP, FONTDIR) #call this to automatically use the FONTDIR constant
