@@ -73,7 +73,7 @@ print(ttf) # Consolas 32 bold
 
 ## Facts
 * You can call `FONTMAP` with a new `fontdir` as many times as you like. All the new font metadata will be added to what already exists.
-* the underlying fontmap singleton has the below structure
+* The underlying `FONTMAP` dict singleton has the below structure:
   ```json
   {
       "Family Name": {
@@ -92,14 +92,18 @@ print(ttf) # Consolas 32 bold
       }
   }
   ```
+  This is a generalization of what the backend does when you request a font
   ```python3
-  #this is a generalization of what the backend does when you request a font
-  
   family = 'DejaVu Sans'
   face   = 'condensed bold oblique'
   path   = FONTMAP(family)[face]
   ttf    = ImageFont.truetype(path, ...)
   ```
 * `encoding` can be set in the constructor or `.instance` method. The default is `"unic"`. The encoding must be valid or it will default to `"unic"`. For information on valid encodings see: https://pillow.readthedocs.io/en/stable/reference/ImageFont.html#PIL.ImageFont.truetype
-* If you are on windows, `C:/Windows/Fonts` directory is automatically loaded. If that's all you need it is unnecessary to call `FONTMAP`. There is a spot reserved for "Linux" and "Darwin" to do the same thing, but I didn't know the directories to use, and have no way to test them. If you are on one of those systems, adjust [`FONTDIR`](https://github.com/OneMadGypsy/SimPIL-Font/blob/main/simpilfont.py#L27) accordingly. 
+* If you are on windows, `C:/Windows/Fonts` directory is automatically loaded. If that's all you need it is unnecessary to call `FONTMAP`. There is a spot reserved for "Linux" and "Darwin" to do the same thing, but I didn't know the directories to use, and have no way to test them. If you are on one of those systems, adjust [`FONTDIR`](https://github.com/OneMadGypsy/SimPIL-Font/blob/main/simpilfont.py#L27) accordingly.
+* If you request a face that does not exist, `"regular"` will be attempted else `"book"` will be attempted else the first face in the family. You can check the faces available for a font with the `.faces` property.
+  ```python3
+  ttf = SimPILFont('Consolas 32 bold')
+  print(ttf.faces) # ('regular', 'bold', 'italic', 'bold italic')
+  ```
 
