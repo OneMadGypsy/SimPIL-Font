@@ -56,16 +56,6 @@ FONTMAP(fontdir='path/to/fonts')
 ttf = SimPILFont.instance('Verdana 32 bold')
 ```
 
-To string
-```python3
-from simpilfont import SimPILFont, FONTMAP
-
-FONTMAP(fontdir='path/to/fonts')
-
-sf = SimPILFont('Consolas 32 bold')
-print(sf) # Consolas 32 bold
-```
-
 ## Facts
 * You can call `FONTMAP` with a new `fontdir` as many times as you like. All the new font metadata will be pooled with the existing font data.
   
@@ -108,8 +98,8 @@ print(sf) # Consolas 32 bold
   ```
 * `encoding` can be set in the constructor or `.instance` method. The default is `"unic"`. The encoding must be valid or it will default to `"unic"`. For information on valid encodings see: https://pillow.readthedocs.io/en/stable/reference/ImageFont.html#PIL.ImageFont.truetype
   ```python3
-  sf  = SimPILFont('Symbol', encoding='symb')
-  ttf = SimPILFont.instance('Symbol', encoding='symb')
+  sf  = SimPILFont('Symbol 16', encoding='symb')
+  ttf = SimPILFont.instance('Symbol 16', encoding='symb')
   ```
 * tkinter font format is barely supported - fails if `overstrike` or `underline` are included
   ```python3
@@ -117,6 +107,9 @@ print(sf) # Consolas 32 bold
   ttf = SimPILFont.instance('{Times New Roman} 32 bold')
   ```
 * If you are on windows, `C:/Windows/Fonts` directory is automatically loaded. If that's all you need it is unnecessary to call `FONTMAP`. There is a spot reserved for "Linux" and "Darwin" to do the same thing, but I didn't know the directories to use, and have no way to test them. If you are on one of those systems, adjust [`FONTDIR`](https://github.com/OneMadGypsy/SimPIL-Font/blob/main/simpilfont.py#L27) accordingly.
-* There are some properties and staticmethods that weren't covered in this README. The code is not even 200 lines. You can browse it and easily figure out the stuff that was skipped. It's mostly stuff like `self.family`, `self.size`, `self.face`, etc..
+* There are some properties and staticmethods that weren't covered in this README. The code is not even 200 lines. You can browse it and easily figure out the stuff that was skipped. It's mostly stuff like `.family`, `.size`, `.face`, etc.. Printing a `SimPILFont`instance can tell you all of that in one shot.
+  ```python3
+  print(sf) # Times New Roman 32 bold
+  ```
 
 
