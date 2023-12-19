@@ -96,7 +96,7 @@ ttf = SimPILFont.instance('Verdana 32 bold')
   
   ```python3
   sf = SimPILFont('DejaVu Sans 32 light italic') #should be extralight
-  print(sf.faces) # ('bold', 'boldoblique', 'extralight', 'oblique', 'book', 'condensedbold', 'condensedboldoblique', 'condensedoblique', 'condensed')
+  print(sf.faces) # ('bold', 'bold oblique', 'extralight', 'oblique', 'book', 'condensed bold', 'condensed bold oblique', 'condensed oblique', 'condensed')
   print(sf)       # DejaVu Sans 32 book
   ```
 * `encoding` can be set in the constructor or `.instance` method. The default is `"unic"`. The encoding must be valid or it will default to `"unic"`. For information on valid encodings see: https://pillow.readthedocs.io/en/stable/reference/ImageFont.html#PIL.ImageFont.truetype
