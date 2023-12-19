@@ -61,4 +61,13 @@ FONTMAP(fontdir='path/to/fonts')
 ttf = SimPILFont.instance('{Times New Roman} 32 bold')
 ```
 
+To string
+```python3
+from simpilfont import SimPILFont, FONTMAP
+
+FONTMAP(fontdir='path/to/fonts')
+
+ttf = SimPILFont('Consolas 32 bold')
+print(ttf) # Consolas 32 bold
+```
 
