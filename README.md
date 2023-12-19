@@ -71,3 +71,9 @@ ttf = SimPILFont('Consolas 32 bold')
 print(ttf) # Consolas 32 bold
 ```
 
+## Facts
+
+* Every time you call `FONTMAP` with the `fontdir` argument, the directory and all of it's subdirectories are scraped for `.ttf` files. The metadata for those files is added to the underlying `FONTMAP` dict.
+* `encoding` can be set in the constructor or `.instance` method. The default is "unic". The encoding must be valid or it will default to "unic". For information on valid encodings see: https://pillow.readthedocs.io/en/stable/reference/ImageFont.html#PIL.ImageFont.truetype
+* If you are on windows "C:/Windows/Fonts" dir is automatically loaded. There is a spot reserved for "Linux" and "Darwin" to do the same thing, but I didn't know the directories to use, and have no way to test them. If you are on one of those systems, adjust `FONTDIR` accordingly.
+
