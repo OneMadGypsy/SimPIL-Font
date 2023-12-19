@@ -115,10 +115,10 @@ class SimPILFont:
         
     #allow partial font requests
     #ex:
-    #    ft      = Font('Verdana 16 bold italic')
-    #    ft.font = '18'            # -> "Verdana 18 bold italic"
-    #    ft.font = '22 regular'    # -> "Verdana 22 regular"
-    #    ft.font = 'Consolas bold' # -> "Consolas 22 bold"
+    #    ttf      = Font('Verdana 16 bold italic')
+    #    ttf.font = '18'            # -> "Verdana 18 bold italic"
+    #    ttf.font = '22 regular'    # -> "Verdana 22 regular"
+    #    ttf.font = 'Consolas bold' # -> "Consolas 22 bold"
     @font.setter
     def font(self, font:str) -> None:
         family, face, size = SimPILFont.metadata(font)
