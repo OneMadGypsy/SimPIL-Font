@@ -95,7 +95,7 @@ print(ttf) # Consolas 32 bold
   ```python3
   #this entire system is little more than a directory scraper that creates a dict of font metadata,
   #and upon request puts the respective results of `FONTMAP('Family Name')['face']` into `ImageFont.truetype` for you
-  #there are a few other bells and whistles, but essentially it's just a lookup table
+  #there are a few other bells and whistles, but essentially it's just a lookup table with a "better-than-nothing" feature
   family = 'DejaVu Sans'
   face   = 'condensed bold oblique'
   path   = FONTMAP(family)[face]
