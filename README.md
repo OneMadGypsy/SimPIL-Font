@@ -96,7 +96,10 @@ print(ttf) # Consolas 32 bold
   #this entire system is little more than a directory scraper that creates a dict of font metadata,
   #and upon request puts the respective results of `FONTMAP('Family Name')['face']` into `ImageFont.truetype` for you
   #there are a few other bells and whistles, but essentially it's just a lookup table
-  ttf =  ImageFont.truetype(FONTMAP('DejaVu Sans')['condensed bold oblique'], ...)
+  family = 'DejaVu Sans'
+  face   = 'condensed bold oblique'
+  path   = FONTMAP(family)[face]
+  ttf    = ImageFont.truetype(path, ...)
   ```
 * `encoding` can be set in the constructor or `.instance` method. The default is `"unic"`. The encoding must be valid or it will default to `"unic"`. For information on valid encodings see: https://pillow.readthedocs.io/en/stable/reference/ImageFont.html#PIL.ImageFont.truetype
 * If you are on windows, `C:/Windows/Fonts` directory is automatically loaded. If that's all you need it is unnecessary to call `FONTMAP`. There is a spot reserved for "Linux" and "Darwin" to do the same thing, but I didn't know the directories to use, and have no way to test them. If you are on one of those systems, adjust [`FONTDIR`](https://github.com/OneMadGypsy/SimPIL-Font/blob/main/simpilfont.py#L27) accordingly. 
