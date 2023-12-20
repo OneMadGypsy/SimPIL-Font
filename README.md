@@ -115,7 +115,7 @@ ttf = SimPILFont.instance('Verdana 32 bold')
     #"Linux"  : ""
   }.get(platform.system(), '')
   ```
-* There are some properties and staticmethods that weren't covered in this README. The code is not even 150 lines. You can browse it and easily figure out the stuff that was skipped. It's mostly stuff like `.family`, `.size`, `.face`, etc.. Printing a `SimPILFont` instance can tell you all of that in one shot.
+* There are some properties and staticmethods that weren't covered in this README. The code is barely 150 lines. You can browse it and easily figure out the stuff that was skipped. It's mostly stuff like `.family`, `.size`, `.face`, etc.. Printing a `SimPILFont` instance can tell you all of that in one shot.
   
   ```python3
   print(sf) # Times New Roman 32 bold
