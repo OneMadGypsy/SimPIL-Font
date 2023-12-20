@@ -10,12 +10,13 @@ FONTMAP(fontdir='path/to/fonts')
 text    = "Hello World"
 
 sf      = SimPILFont('ABeeZee 32')
+ttf     = sf.font
 x,y,w,h = sf.bbox(text)
 
-img  = Image.new("RGB", (w-x, h-y), color="black")
+img  = Image.new("RGB", (w, h), color="black")
 dctx = ImageDraw.Draw(img)
 
-dctx.text((-x, -y), text, font=sf.font, fill="white")
+dctx.text((x, y), text, font=ttf, fill="white")
 
 img.show()
 del dctx
