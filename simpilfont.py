@@ -143,5 +143,9 @@ class SimPILFont:
         x, y, w, h = self.font.getbbox(text)
         return -x, -y, w-x, h-y
         
+    def full_bbox(self, text:str) -> tuple:
+        x, y, w, h = self.font.getbbox(text)
+        return 0, 0, w+x, h+y
+        
     def offset(self, text:str) -> tuple:
         return self.font.getoffset(text)
