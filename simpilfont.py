@@ -42,8 +42,6 @@ class SimPILFont:
 
     ## STATIC
 
-    #whichever one exists first:
-    #  the face you requested else "regular" else the first face in keys
     @staticmethod
     def bestface(face:str, faces:dict) -> str:
         keys = faces.keys()
@@ -60,7 +58,6 @@ class SimPILFont:
                 
         return face
         
-    #parse font string and return parts
     @staticmethod      
     def metadata(font:str) -> tuple:
         fmly, face, size = [], [], 0
@@ -71,8 +68,6 @@ class SimPILFont:
                 
         return ' '.join(fmly), ' '.join(face), size
     
-    #get an ImageFont without a Font instance
-    #partial font requests are not supported
     @staticmethod  
     def instance(font:str, encoding:str='unic') -> ImageFont.FreeTypeFont:
         family, face, size = SimPILFont.metadata(font)
@@ -116,12 +111,6 @@ class SimPILFont:
     def encoding(self, enc:str) -> None:
         self._encoding = enc if enc in SimPILFont.ENCODINGS else 'unic'
         
-    #allow partial font requests
-    #ex:
-    #    ttf      = Font('Verdana 16 bold italic')
-    #    ttf.font = '18'            # -> "Verdana 18 bold italic"
-    #    ttf.font = '22 regular'    # -> "Verdana 22 regular"
-    #    ttf.font = 'Consolas bold' # -> "Consolas 22 bold"
     @font.setter
     def font(self, font:str) -> None:
         family, face, size = SimPILFont.metadata(font)
