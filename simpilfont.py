@@ -63,17 +63,13 @@ class SimPILFont:
     #parse font string and return parts
     @staticmethod      
     def metadata(font:str) -> tuple:
-        font = font.replace('{','').replace('}','') #for tk style font str
         fmly, face, size = [], [], 0
         
         for part in font.split(' '):
             if part.isdigit(): size = int(part)
             else             : (face, fmly)[part != part.lower()].append(part)
                 
-        family = ' '.join(fmly)
-        face   = ' '.join(face)
-        
-        return family, face, size
+        return ' '.join(fmly), ' '.join(face), size
     
     #get an ImageFont without a Font instance
     #partial font requests are not supported
