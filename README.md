@@ -13,10 +13,10 @@ sf      = SimPILFont('ABeeZee 32')
 ttf     = sf.font
 x,y,w,h = sf.bbox(text)
 
-img  = Image.new("RGB", (w, h), color="black")
+img  = Image.new("RGB", (w+x, h+y), color="black")
 dctx = ImageDraw.Draw(img)
 
-dctx.text((x, y), text, font=ttf, fill="white")
+dctx.text((0, 0), text, font=ttf, fill="white")
 
 img.show()
 del dctx
