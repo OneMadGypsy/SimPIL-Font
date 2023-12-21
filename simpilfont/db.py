@@ -13,7 +13,6 @@ FONTDIR = os.path.join(HOMEDIR, 'fonts')
 if not os.path.isdir(FONTDIR): os.mkdir(FONTDIR)
 
 
-
 @dataclass
 class DBEntry_t:
     id    :str
