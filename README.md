@@ -26,6 +26,8 @@ del dctx
 
 #### Inline Font Retrieval
 ```python3
+import simpilfont as font
+
 sf = font.Font()
 
 helvetica_22  = sf('Helvetica 22').font # Helvetica
@@ -34,11 +36,13 @@ helvetics_22b = sf('bold').font         # Helvetica bold
 
 #### BBox Variations
 ```python3
+import simpilfont as font
+
 sf = font.Font('Verdana 18')
 
 text = "Hello World"
 
-#proxy for ttf.getbbox(text)
+#proxy for ImageFont.truetype(...).getbbox(text)
 x1, y1, w1, h1 = sf.bbox(text)
 
 #the smallest possible bbox
