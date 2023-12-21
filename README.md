@@ -3,129 +3,50 @@ simplify loading remote fonts with PIL
 
 ## Basic Usage
 ```python3
-from simpilfont import SimPILFont, FONTMAP
+from PIL import Image, ImageDraw
+import simpilfont as font
 
-FONTMAP(fontdir='path/to/fonts')
+SYSFONTS = 'C:/Windows/Fonts/'
+DEJAVU32 = "DejaVu Sans 32 bold oblique"
+        
+text     = "Hello World"
 
-text    = "Hello World"
+sf       = font.Font(DEJAVU32, fontdirs=SYSFONTS)
+djvu_32  = sf.font
+x,y,w,h  = sf.max_bbox(text)
 
-sf      = SimPILFont('ABeeZee 32')
-ttf     = sf.font
-x,y,w,h = sf.bbox(text)
+img      = Image.new("RGB", (w, h), color="black")
+dctx     = ImageDraw.Draw(img)
 
-img  = Image.new("RGB", (w+x, h+y), color="black")
-dctx = ImageDraw.Draw(img)
-
-dctx.text((0, 0), text, font=ttf, fill="white")
+dctx.text((x, y), text, font=djvu_32, fill="white")
 
 img.show()
 del dctx
 ```
 
-## Extra
-Dump fontmap to `./fonts.json`. 
-> The below example is also setting `fontdir`, but that isn't required if fonts are already loaded.
-> The dump will be the entire dict, including the new font data from `fontdir` (if used).
-> The resulting `fonts.json` is never used with any part of the font system. It's only purpose is to be a convenience if you want a hard-copy.
-
+#### Inline Font Retrieval
 ```python3
-from simpilfont import SimPILFont, FONTMAP
+sf = font.Font()
 
-FONTMAP(fontdir='path/to/fonts', dumpmap=True)
+helvetica_22  = sf.('Helvetica 22').font # Helvetica
+helvetics_22b = sf.('bold').font         # Helvetica bold
 ```
 
-Partial font changes
+#### BBox Variations
 ```python3
-from simpilfont import SimPILFont, FONTMAP
+sf = font.Font('Verdana 18')
 
-FONTMAP(fontdir='path/to/fonts')
+text = "Hello World"
 
-sf      = SimPILFont('Consolas 32') # Consolas 32 regular
-sf.font = 'bold'                    # Consolas 32 bold
-sf.font = 'Verdana'                 # Verdana 32 bold
-sf.font = '18 italic'               # Verdana 18 italic
-sf.font = 'bold italic'             # Verdana 18 bold italic
-sf.font = '12'                      # Verdana 12 bold italic
+#proxy for ttf.getbbox(text)
+x1, y1, w1, h1 = sf.bbox(text)
+
+#the smallest possible bbox
+x2, y2, w2, h2 = sf.min_bbox(text)
+
+#(right/bottom) margins mirror (left/top) margins, respectively
+x3, y3, w3, h3 = sf.max_bbox(text)
 ```
 
-ImageFont instance without SimPILFont instance
-```python3
-from simpilfont import SimPILFont, FONTMAP
-
-FONTMAP(fontdir='path/to/fonts')
-
-ttf = SimPILFont.instance('Verdana 32 bold')
-```
-
-## Facts
-* You can call `FONTMAP` with a new `fontdir` as many times as you like. All the new font metadata will be pooled with the existing font data.
-  
-  ```python3
-  FONTMAP(fontdir="these/fonts/")
-  FONTMAP(fontdir="those/fonts/")
-  FONTMAP(fontdir="other/fonts/")
-  ```
-* The underlying singleton `FONTMAP` dict is formatted like the object below:
-  
-  ```json
-  {
-      "Family Name": {
-          "face": "path/to/this_face.ttf",
-      },
-      "DejaVu Sans": {
-        "bold": "c:/Windows/Fonts\\DejaVuSans-Bold.ttf",
-        "boldoblique": "c:/Windows/Fonts\\DejaVuSans-BoldOblique.ttf",
-        "extralight": "c:/Windows/Fonts\\DejaVuSans-ExtraLight.ttf",
-        "oblique": "c:/Windows/Fonts\\DejaVuSans-Oblique.ttf",
-        "book": "c:/Windows/Fonts\\DejaVuSans.ttf",
-        "condensedbold": "c:/Windows/Fonts\\DejaVuSansCondensed-Bold.ttf",
-        "condensedboldoblique": "c:/Windows/Fonts\\DejaVuSansCondensed-BoldOblique.ttf",
-        "condensedoblique": "c:/Windows/Fonts\\DejaVuSansCondensed-Oblique.ttf",
-        "condensed": "c:/Windows/Fonts\\DejaVuSansCondensed.ttf"
-      }
-  }
-  ```
-  This is a generalization of what the backend does when you request a font
-  
-  ```python3
-  family = 'DejaVu Sans'
-  face   = 'condensed bold oblique'
-  path   = FONTMAP(family)[face.replace(' ', '')]
-  ttf    = ImageFont.truetype(path, ...)
-  ```
-* If you request a face that does not exist, `"regular"` will be attempted else `"book"` will be attempted else the first face in the family. You can check the available faces for a font with the `.faces` property.
-  
-  ```python3
-  sf = SimPILFont('DejaVu Sans 32 light italic') #should be extralight
-  print(sf.faces) # ('bold', 'bold oblique', 'extralight', 'oblique', 'book', 'condensed bold', 'condensed bold oblique', 'condensed oblique', 'condensed')
-  print(sf)       # DejaVu Sans 32 book
-  ```
-* `encoding` can be set in the constructor or `.instance` method. The default is `"unic"`. The encoding must be valid or it will default to `"unic"`. For information on valid encodings see: https://pillow.readthedocs.io/en/stable/reference/ImageFont.html#PIL.ImageFont.truetype
-  
-  ```python3
-  sf  = SimPILFont('Symbol 16', encoding='symb')
-  ttf = SimPILFont.instance('Symbol 16', encoding='symb')
-  ```
-* If you are on windows, `C:/Windows/Fonts` directory is automatically loaded. If that's all you need, it is unnecessary to call `FONTMAP`. There is a spot reserved for "Linux" and "Darwin" to do the same thing, but I didn't know the directories to use, and have no way to test them. If you are on one of those systems, adjust [`FONTDIR`](https://github.com/OneMadGypsy/SimPIL-Font/blob/main/simpilfont.py#L28) accordingly.
-  ```python3
-  #line 28 of simpilfont.py
-  FONTDIR = {
-    "Windows": "c:/Windows/Fonts/",
-    #"Darwin" : "",
-    #"Linux"  : ""
-  }.get(platform.system(), '')
-  ```
-* There are some properties and staticmethods that weren't covered in this README. The code is barely 150 lines. You can browse it and easily figure out the stuff that was skipped. It's mostly stuff like `.family`, `.size`, `.face`, etc.. Printing a `SimPILFont` instance can tell you all of that in one shot.
-  
-  ```python3
-  print(sf) # Times New Roman 32 bold
-  ```
-* `.font` and `.encoding` are the only properties with a setter. Setting `.encoding` will not update `.font`. 
-  
-  ```python3
-  #encoding after font has already been made
-  sf.encoding = "symb"
-  sf.font     = str(sf)
-  ```
 
 
