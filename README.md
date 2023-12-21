@@ -24,14 +24,22 @@ img.show()
 del dctx
 ```
 
-#### Inline Font Retrieval
+#### Font Retrieval
 ```python3
 import simpilfont as font
 
 sf = font.Font()
 
+#inline
 helvetica_22  = sf('Helvetica 22').font # Helvetica
 helvetics_22b = sf('bold').font         # Helvetica bold
+
+#alternative
+sf.font       = 'Helvetica 22'
+helvetica_22  = sf.font  # Helvetica
+
+sf.font       = 'bold'   # inherits what it doesn't change ~ same for the inline method
+helvetics_22b = sf.font  # Helvetica bold
 ```
 
 #### BBox Variations
