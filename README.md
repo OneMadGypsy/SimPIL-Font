@@ -28,8 +28,8 @@ del dctx
 ```python3
 sf = font.Font()
 
-helvetica_22  = sf.('Helvetica 22').font # Helvetica
-helvetics_22b = sf.('bold').font         # Helvetica bold
+helvetica_22  = sf('Helvetica 22').font # Helvetica
+helvetics_22b = sf('bold').font         # Helvetica bold
 ```
 
 #### BBox Variations
