@@ -79,15 +79,12 @@ print(sf) # Impact 18 regular
 
 options = sf(HELVETICA_22).options  # ('regular', 'bold', 'italic', etc...)
 path    = sf.path                   # "path/to/regular/helvetica.ttf"
-faces   = sf.faces
-"""
-{
-    "regular": "path/to/regular/helvetica.ttf",
-    "bold": "path/to/bold/helvetica.ttf",
-    "italic": "path/to/italic/helvetica.ttf",
-    ...
-}
-"""
+faces   = sf.faces                 """{
+                                          "regular": "path/to/regular/helvetica.ttf",
+                                          "bold": "path/to/bold/helvetica.ttf",
+                                          "italic": "path/to/italic/helvetica.ttf",
+                                           ...
+                                       } """
 ```
 
 #### BBox Variations
