@@ -90,6 +90,10 @@ print(sf) # Verdana 16 bold italic - but I need the bbox for IMPACT_18
 
 x,y,w,h = sf(IMPACT_18).bbox('Hello World')
 
+print(sf) # Impact 18 regular - but I need the options for HELVETICA_22
+
+options = sf(HELVETICA_22).options  # (regular, bold, italic, etc...)
+
 ```
 
-See how that works? Your constants are the font reference so, there is no reason to make multiple `Font` instances.
+See get the point. Your constants are the font reference so, there is no reason to make multiple `Font` instances.
