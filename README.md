@@ -73,7 +73,7 @@ You can use partial font descriptions. You shouldn't view font requests as a fre
 
 You can create multiple `Font` instances, but there is no good reason to. The `Font` class is the front-end to your database. It's dressed up real pretty like it's trying to be a font instance, but It's really EVERY font instance. Using the inline request method you can return anything you need to know about a font, including the font, and even the bbox methods for that font. 
 
-```
+```python3
 import simpilfont as font
 
 HELVETICA_22 = 'Helvetica 22 regular'
