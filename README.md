@@ -7,21 +7,29 @@ from PIL import Image, ImageDraw
 import simpilfont as font
 
 SYSFONTS = 'C:/Windows/Fonts/'
-DEJAVU32 = "DejaVu Sans 32 bold oblique"
+DEJAVU32 = "DejaVu Sans 32 bold"
         
-text     = "Hello World"
+"""
+The database will only be updated if:
+  * the `fontdirs` path(s) has never been scraped
+  * the `fontdirs` path(s) has a newer modification date than it's database entry 
+"""
+sf = font.Font(fontdirs=SYSFONTS)
 
-sf       = font.Font(DEJAVU32, fontdirs=SYSFONTS)
-djvu_32  = sf.font
-x,y,w,h  = sf.max_bbox(text)
+#get ImageFont
+djvu_32     = sf(DEJAVU32).font          #DejaVu Sans 32 bold
+x1,y1,w1,h1 = sf.max_bbox("Hello World")
 
-img      = Image.new("RGB", (w, h), color="black")
-dctx     = ImageDraw.Draw(img)
+djvu_27     = sf('27 book').font         #DejaVu Sans 27 book
+x2,y2,w2,h2 = sf.max_bbox("Goodbye World")
 
-dctx.text((x, y), text, font=djvu_32, fill="white")
+img  = Image.new("RGB", (max(w1, w2), h1+h2+y1+y2), color="black")
+dctx = ImageDraw.Draw(img)
+
+dctx.text((x1, y1)   , "Hello World"  , font=djvu_32, fill="white")
+dctx.text((x1, h1+y2), "Goodbye World", font=djvu_27, fill="red")
 
 img.show()
-del dctx
 ```
 
 #### Font Retrieval
@@ -69,7 +77,24 @@ When you call `Font` with a `fontdirs` argument, this system checks the database
 
 The absolute very first time you ever import `simpilfont`, it will create a `./dat/` directory and put a database in it. It also creates a `./dat/fonts/` directory. Copy fonts to `./dat/fonts/`, and on the next run of `Font()`, they will be found and registered in the database. If you intend to go this route, you never have to use the `fontdirs` argument.
 
-You can use partial font descriptions. You shouldn't view font requests as a fresh request. You should always view it as modifying what is already there. For instance, every `Font` instance starts as `Arial 12` - if you request `Helvetica`, you will have `Helvetica 12`. This is an important thing to remember. What if you requested `DejaVu Sans 22 condensed bold oblique`, and then made a new request for `Impact 18` ~ what you really have is `Impact 18 condensed bold oblique`. That isn't going to exist. My system would catch that error and end up defaulting to `Impact 18 regular`, but know that you would actually be making a bad request. Any part of a font can be changed with a partial description.
+font requests have the signature `"family size face"` ex: `"Verdana 16 bold italic"`. A full font request will include all of these parts, including `"regular"` when you do not want a modified face. Let's look at what can happen when you don't consider this.
+
+```python3
+import simpilfont as font
+
+sf = font.Font()
+
+print(sf('DejaVu Sans 16 bold')) # 'DejaVu Sans 16 bold'
+print(sf('Verdana 12'))          # 'Verdana 12 bold'
+```
+Believe it or not, this is a feature. Every request is explicit.
+
+```python3
+print(sf('DejaVu Sans 16 bold'))    # 'DejaVu Sans 16 bold'
+print(sf('12'))                     # 'DejaVu Sans 12 bold'
+print(sf('condensed bold oblique')) # 'DejaVu Sans 12 condensed bold oblique'
+print(sf('Impact 18 regular'))      # 'Impact 18 regular'
+```
 
 You can create multiple `Font` instances, but there is no good reason to. The `Font` class is the front-end to your database. It's dressed up real pretty like it's trying to be a font instance, but It's really EVERY font instance. Using the inline request method you can return anything you need to know about a font, including the font, and even the bbox methods for that font. 
 
