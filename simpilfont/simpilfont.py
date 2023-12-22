@@ -180,8 +180,7 @@ class Font:
             if option.replace(' ', '') == face:
                 self._face = option
                 break
-
-        #final ImageFont instance
+                
         self._font = ImageFont.truetype(self._path, self._size, encoding=self._encoding)
         
     @property  #return tuple of "known" font directories
@@ -204,15 +203,13 @@ class Font:
         
     ## DUNDER
 
-    def __init__(self, font:str|None=None, fontdirs:Iterable='', encoding:str='unic') -> None:
+    def __init__(self, fontdirs:Iterable='', encoding:str='unic') -> None:
         #database instance
         self._db      = FontDatabase()
         #establish encoding
         self.encoding = encoding
         #check/include all possible font directories - duplicates are dropped
         self.fontdirs = FONTDIR, self.fontdirs, fontdirs
-        #instance ImageFont font
-        self.font     = font
      
     def __str__(self) -> str:
         return ' '.join((self._family, f'{self._size}', self._face))
@@ -220,7 +217,7 @@ class Font:
     def __repr__(self) -> str:
         return str(self)
         
-    #inline font set
+    #inline request
     def __call__(self, font:str) -> Font:
         self.font = font
         return self
@@ -229,24 +226,18 @@ class Font:
        
     #basic bbox
     def bbox(self, text:str) -> tuple:
-        return self.font.getbbox(text)
+        return self._font.getbbox(text)
     
     #smallest possible bbox
     def min_bbox(self, text:str) -> tuple:
-        x, y, w, h = self.font.getbbox(text)
+        x, y, w, h = self._font.getbbox(text)
         return -x, -y, w-x, h-y
         
     #(right/bottom) margins mirror the (left/top) margins, respectively
     def max_bbox(self, text:str) -> tuple:
-        x, y, w, h = self.font.getbbox(text)
+        x, y, w, h = self._font.getbbox(text)
         return 0, 0, w+x, h+y
         
     #this is suspiciously always the same as `.bbox(text)[0:2]`
     def offset(self, text:str) -> tuple:
-        return self.font.getoffset(text)
-    
-        
-#
-
-
-
+        return self._font.getoffset(text)
