@@ -40,7 +40,7 @@ print(sf('Verdana 16 bold'))        # 'Verdana 16 bold'
 print(sf('DejaVu Sans'))            # 'DejaVu Sans 16 bold'
 print(sf('12'))                     # 'DejaVu Sans 12 bold'
 print(sf('condensed bold oblique')) # 'DejaVu Sans 12 condensed bold oblique'
-print(sf('Impact 18 regular'))      # 'Impact 18 regular'
+print(sf('Impact regular'))         # 'Impact 12 regular'
 ```
 
 #### Font Data
