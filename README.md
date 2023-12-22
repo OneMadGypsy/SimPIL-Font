@@ -94,4 +94,4 @@ x,y,w,h = sf(IMPACT_18).bbox(text)
 
 ```
 
-See how that works? Your constants are the font reference.
+See how that works? Your constants are the font reference so, there is no reason to make multiple `Font` instances.
