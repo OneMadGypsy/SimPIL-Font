@@ -4,23 +4,17 @@ simplify loading remote fonts with PIL
 ## Basic Usage
 ```python3
 from PIL import Image, ImageDraw
-import simpilfont as font
+from simpilfont import SimPILFont
 
-SYSFONTS = 'C:/Windows/Fonts/'
-DEJAVU32 = "DejaVu Sans 32 bold"
-        
-"""
-The database will only be updated if:
-  * the `fontdirs` path(s) has never been scraped
-  * the `fontdirs` path(s) has a newer modification date than it's database entry 
-"""
-sf = font.Font(fontdirs=SYSFONTS)
+#you can use a list|tuple of font directories
+sf = SimPILFont('C:/Windows/Fonts/')
 
-#get ImageFont
-djvu_32   = sf(DEJAVU32).font          #DejaVu Sans 32 bold
+#get ImageFont and dimensions of text
+djvu_32   = sf("DejaVu Sans 32 bold").font  #DejaVu Sans 32 bold
 _,_,w1,h1 = sf.max_bbox("Hello World")
 
-djvu_27   = sf('27 book').font         #DejaVu Sans 27 book
+#get ImageFont and dimensions of text
+djvu_27   = sf('27 book').font              #DejaVu Sans 27 book
 _,_,w2,h2 = sf.max_bbox("Goodbye World")
 
 img  = Image.new("RGB", (max(w1, w2), h1+h2), color="black")
@@ -30,6 +24,7 @@ dctx.text((0, 0) , "Hello World"  , font=djvu_32, fill="white")
 dctx.text((0, h1), "Goodbye World", font=djvu_27, fill="red")
 
 img.show()
+del dctx
 ```
 
 #### Font Requests
@@ -37,9 +32,9 @@ img.show()
 A font request has the signature `"family size face"` ex: `"Verdana 16 bold italic"`. A full font request will include all of these parts. Let's look at what can happen when you don't consider this.
 
 ```python3
-import simpilfont as font
+from simpilfont import SimPILFont
 
-sf = font.Font('C:/Windows/Fonts/')
+sf = SimPILFont('C:/Windows/Fonts/')
 
 print(sf('DejaVu Sans 16 bold')) # 'DejaVu Sans 16 bold'
 print(sf('Verdana 12'))          # 'Verdana 12 bold'
@@ -55,17 +50,16 @@ print(sf('Impact 18 regular'))      # 'Impact 18 regular'
 
 #### Font Data
 
-`.family`, `.face`, `.size`, `.path`, `.faces`, `.options`, `.encoding`, and `.font` all return exactly what you would expect them to. `encoding` and `font` are the only 2 that can be set.
+`.family`, `.face`, `.size`, `.path`, `.options`, `.encoding`, and `.font` all return exactly what you would expect them to. `encoding` and `font` are the only 2 that can be set.
 
 ```python3
-import simpilfont as font
-SYSFONTS     = 'C:/Windows/Fonts/'
+from simpilfont import SimPILFont
+
+sf = SimPILFont('C:/Windows/Fonts/')
 
 HELVETICA_22 = 'Helvetica 22 regular'
 IMPACT_18    = 'Impact 18 regular'
 VERDANA_16BI = 'Verdana 16 bold italic'
-
-sf = font.Font(SYSFONTS)
 
 helvetica_22 = sf(HELVETICA_22).font
 impact_18    = sf(IMPACT_18).font
@@ -79,19 +73,13 @@ print(sf) # Impact 18 regular
 
 options = sf(HELVETICA_22).options  # ('regular', 'bold', 'italic', etc...)
 path    = sf.path                   # "path/to/regular/helvetica.ttf"
-faces   = sf.faces                  # {
-                                    #    "regular": "path/to/regular/helvetica.ttf",
-                                    #    "bold": "path/to/bold/helvetica.ttf",
-                                    #    "italic": "path/to/italic/helvetica.ttf",
-                                    #     ...
-                                    # } 
 ```
 
 #### BBox Variations
 ```python3
-import simpilfont as font
+from simpilfont import SimPILFont
 
-sf  = font.Font('C:/Windows/Fonts/')
+sf  = SimPILFont('C:/Windows/Fonts/')
 ttf = sf("Verdana 20 regular").font
 
 text = "Hello World"
@@ -106,11 +94,3 @@ x2, y2, w2, h2 = sf.min_bbox(text)
 x3, y3, w3, h3 = sf.max_bbox(text)
 ```
 
-
-----------------
-
-## Details
-
-When you call `Font` with a `fontdirs` argument, this system checks the database for the directory. If it exists, modification dates are compared. If the database has an old modification date for this directory or the directory has never been scraped, the directory and all subdirectories are scraped for '.ttf' fonts. This means you only need to supply `fontdirs` values, once ... ever. 
-
-The absolute very first time you ever import `simpilfont`, it will create a `./dat/` directory and put a database in it. It also creates a `./dat/fonts/` directory. Copy fonts to `./dat/fonts/`, and on the next run of `Font()`, they will be found and registered in the database. If you intend to go this route, you never have to use the `fontdirs` argument.
