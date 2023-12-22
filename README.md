@@ -14,7 +14,7 @@ The database will only be updated if:
   * the `fontdirs` path(s) has never been scraped
   * the `fontdirs` path(s) has a newer modification date than it's database entry 
 """
-sf = font.Font(SYSFONTS)
+sf = font.Font(fontdirs=SYSFONTS)
 
 #get ImageFont
 djvu_32     = sf(DEJAVU32).font          #DejaVu Sans 32 bold
