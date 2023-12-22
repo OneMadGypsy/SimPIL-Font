@@ -23,7 +23,7 @@ x1,y1,w1,h1 = sf.max_bbox("Hello World")
 djvu_27     = sf('27 book').font         #DejaVu Sans 27 book
 x2,y2,w2,h2 = sf.max_bbox("Goodbye World")
 
-img  = Image.new("RGB", (max(w1, w2), h1+h2+y1+y2), color="black")
+img  = Image.new("RGB", (max(w1, w2), h1+h2), color="black")
 dctx = ImageDraw.Draw(img)
 
 dctx.text((x1, y1)   , "Hello World"  , font=djvu_32, fill="white")
