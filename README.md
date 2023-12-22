@@ -39,7 +39,8 @@ A font request has the signature `"family size face"` ex: `"Verdana 16 bold ital
 ```python3
 import simpilfont as font
 
-sf = font.Font()
+SYSFONTS = 'C:/Windows/Fonts/'
+sf = font.Font(SYSFONTS)
 
 print(sf('DejaVu Sans 16 bold')) # 'DejaVu Sans 16 bold'
 print(sf('Verdana 12'))          # 'Verdana 12 bold'
@@ -59,7 +60,7 @@ print(sf('Impact 18 regular'))      # 'Impact 18 regular'
 
 ```python3
 import simpilfont as font
-SYSFONTS = 'C:/Windows/Fonts/'
+SYSFONTS     = 'C:/Windows/Fonts/'
 
 HELVETICA_22 = 'Helvetica 22 regular'
 IMPACT_18    = 'Impact 18 regular'
@@ -93,9 +94,10 @@ faces   = sf.faces
 #### BBox Variations
 ```python3
 import simpilfont as font
-SYSFONTS = 'C:/Windows/Fonts/'
 
-sf = font.Font(SYSFONTS)
+SYSFONTS = 'C:/Windows/Fonts/'
+sf  = font.Font(SYSFONTS)
+ttf = sf("Verdana 20 regular").font
 
 text = "Hello World"
 
