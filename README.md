@@ -78,13 +78,13 @@ x,y,w,h = sf(IMPACT_18).bbox('Hello World')
 print(sf) # Impact 18 regular
 
 options = sf(HELVETICA_22).options  # ('regular', 'bold', 'italic', etc...)
-path    = sf.path                   # "path/to/regular/helvetica.tft"
+path    = sf.path                   # "path/to/regular/helvetica.ttf"
 faces   = sf.faces
 """
 {
-    "regular": "path/to/regular/helvetica.tft",
-    "bold": "path/to/bold/helvetica.tft",
-    "italic": "path/to/italic/helvetica.tft",
+    "regular": "path/to/regular/helvetica.ttf",
+    "bold": "path/to/bold/helvetica.ttf",
+    "italic": "path/to/italic/helvetica.ttf",
     ...
 }
 """
