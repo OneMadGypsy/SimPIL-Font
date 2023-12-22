@@ -17,17 +17,17 @@ The database will only be updated if:
 sf = font.Font(fontdirs=SYSFONTS)
 
 #get ImageFont
-djvu_32     = sf(DEJAVU32).font          #DejaVu Sans 32 bold
-x1,y1,w1,h1 = sf.max_bbox("Hello World")
+djvu_32   = sf(DEJAVU32).font          #DejaVu Sans 32 bold
+_,_,w1,h1 = sf.max_bbox("Hello World")
 
-djvu_27     = sf('27 book').font         #DejaVu Sans 27 book
-x2,y2,w2,h2 = sf.max_bbox("Goodbye World")
+djvu_27   = sf('27 book').font         #DejaVu Sans 27 book
+_,_,w2,h2 = sf.max_bbox("Goodbye World")
 
 img  = Image.new("RGB", (max(w1, w2), h1+h2), color="black")
 dctx = ImageDraw.Draw(img)
 
-dctx.text((x1, y1), "Hello World"  , font=djvu_32, fill="white")
-dctx.text((x1, h1), "Goodbye World", font=djvu_27, fill="red")
+dctx.text((0, 0) , "Hello World"  , font=djvu_32, fill="white")
+dctx.text((0, h1), "Goodbye World", font=djvu_27, fill="red")
 
 img.show()
 ```
