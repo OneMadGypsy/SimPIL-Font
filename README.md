@@ -29,7 +29,7 @@ del dctx
 
 #### Font Requests
 
-A font request has the signature `"family size face"` ex: `"Verdana 16 bold italic"`. Requests are explicit.
+A font request has the signature `"family size face"` ex: `"Verdana 16 bold italic"`. Requests are explicit so, any part of a font can be changed.
 
 ```python3
 from simpilfont import SimPILFont
@@ -37,9 +37,9 @@ from simpilfont import SimPILFont
 sf = SimPILFont('C:/Windows/Fonts/')
 
 print(sf('Verdana 16 bold'))        # 'Verdana 16 bold'
-print(sf('DejaVu Sans 12'))         # 'DejaVu Sans 12 bold'
-print(sf('16'))                     # 'DejaVu Sans 16 bold'
-print(sf('condensed bold oblique')) # 'DejaVu Sans 16 condensed bold oblique'
+print(sf('DejaVu Sans'))            # 'DejaVu Sans 16 bold'
+print(sf('12'))                     # 'DejaVu Sans 12 bold'
+print(sf('condensed bold oblique')) # 'DejaVu Sans 12 condensed bold oblique'
 print(sf('Impact 18 regular'))      # 'Impact 18 regular'
 ```
 
