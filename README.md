@@ -14,7 +14,7 @@ The database will only be updated if:
   * the `fontdirs` path(s) has never been scraped
   * the `fontdirs` path(s) has a newer modification date than it's database entry 
 """
-sf = font.Font(fontdirs=SYSFONTS)
+sf = font.Font(SYSFONTS)
 
 #get ImageFont
 djvu_32     = sf(DEJAVU32).font          #DejaVu Sans 32 bold
@@ -32,29 +32,70 @@ dctx.text((x1, h1+y2), "Goodbye World", font=djvu_27, fill="red")
 img.show()
 ```
 
-#### Font Retrieval
+#### Font Requests
+
+A font request has the signature `"family size face"` ex: `"Verdana 16 bold italic"`. A full font request will include all of these parts. Let's look at what can happen when you don't consider this.
+
 ```python3
 import simpilfont as font
 
 sf = font.Font()
 
-#inline
-helvetica_22  = sf('Helvetica 22').font # Helvetica
-helvetica_22b = sf('bold').font         # Helvetica bold
+print(sf('DejaVu Sans 16 bold')) # 'DejaVu Sans 16 bold'
+print(sf('Verdana 12'))          # 'Verdana 12 bold'
+```
+Believe it or not, this is a feature. Every request is explicit.
 
-#alternative
-sf.font       = 'Helvetica 22'
-helvetica_22  = sf.font  # Helvetica
+```python3
+print(sf('DejaVu Sans 16 bold'))    # 'DejaVu Sans 16 bold'
+print(sf('12'))                     # 'DejaVu Sans 12 bold'
+print(sf('condensed bold oblique')) # 'DejaVu Sans 12 condensed bold oblique'
+print(sf('Impact 18 regular'))      # 'Impact 18 regular'
+```
 
-sf.font       = 'bold'   # inherits what it doesn't change ~ same for the inline method
-helvetica_22b = sf.font  # Helvetica bold
+#### Font Data
+
+`.family`, `.face`, `.size`, `.path`, `.faces`, `.options`, `.encoding`, and `.font` all return exactly what you would expect them to. `encoding` and `font` are the only 2 that can be set.
+
+```python3
+import simpilfont as font
+SYSFONTS = 'C:/Windows/Fonts/'
+
+HELVETICA_22 = 'Helvetica 22 regular'
+IMPACT_18    = 'Impact 18 regular'
+VERDANA_16BI = 'Verdana 16 bold italic'
+
+sf = font.Font(SYSFONTS)
+
+helvetica_22 = sf(HELVETICA_22).font
+impact_18    = sf(IMPACT_18).font
+verdana_16bi = sf(VERDANA_16BI).font
+
+print(sf) # Verdana 16 bold italic
+
+x,y,w,h = sf(IMPACT_18).bbox('Hello World')
+
+print(sf) # Impact 18 regular
+
+options = sf(HELVETICA_22).options  # ('regular', 'bold', 'italic', etc...)
+path    = sf.path                   # "path/to/regular/helvetica.tft"
+faces   = sf.faces
+"""
+{
+    "regular": "path/to/regular/helvetica.tft",
+    "bold": "path/to/bold/helvetica.tft",
+    "italic": "path/to/italic/helvetica.tft",
+    ...
+}
+"""
 ```
 
 #### BBox Variations
 ```python3
 import simpilfont as font
+SYSFONTS = 'C:/Windows/Fonts/'
 
-sf = font.Font('Verdana 18')
+sf = font.Font(SYSFONTS)
 
 text = "Hello World"
 
@@ -76,47 +117,3 @@ x3, y3, w3, h3 = sf.max_bbox(text)
 When you call `Font` with a `fontdirs` argument, this system checks the database for the directory. If it exists, modification dates are compared. If the database has an old modification date for this directory or the directory has never been scraped, the directory and all subdirectories are scraped for '.ttf' fonts. This means you only need to supply `fontdirs` values, once ... ever. 
 
 The absolute very first time you ever import `simpilfont`, it will create a `./dat/` directory and put a database in it. It also creates a `./dat/fonts/` directory. Copy fonts to `./dat/fonts/`, and on the next run of `Font()`, they will be found and registered in the database. If you intend to go this route, you never have to use the `fontdirs` argument.
-
-A font request has the signature `"family size face"` ex: `"Verdana 16 bold italic"`. A full font request will include all of these parts. Let's look at what can happen when you don't consider this.
-
-```python3
-import simpilfont as font
-
-sf = font.Font()
-
-print(sf('DejaVu Sans 16 bold')) # 'DejaVu Sans 16 bold'
-print(sf('Verdana 12'))          # 'Verdana 12 bold'
-```
-Believe it or not, this is a feature. Every request is explicit.
-
-```python3
-print(sf('DejaVu Sans 16 bold'))    # 'DejaVu Sans 16 bold'
-print(sf('12'))                     # 'DejaVu Sans 12 bold'
-print(sf('condensed bold oblique')) # 'DejaVu Sans 12 condensed bold oblique'
-print(sf('Impact 18 regular'))      # 'Impact 18 regular'
-```
-
-You can create multiple `Font` instances, but there is no good reason to. Using the inline request method you can toggle between any available font. `Font` isn't really a "font" instance. It's the front-end to the database. When you send a "font request", you're really saying - Find the "family" entry in the database, look for the "face" field. if it exists, return it's value (the font file path), if not, gimme something else ("regular", "book", first available face) in that order.
-
-```python3
-import simpilfont as font
-
-HELVETICA_22 = 'Helvetica 22 regular'
-IMPACT_18    = 'Impact 18 regular'
-VERDANA_16BI = 'Verdana 16 bold italic'
-
-sf = font.Font()
-
-helvetica_22 = sf(HELVETICA_22).font
-impact_18    = sf(IMPACT_18).font
-verdana_16bi = sf(VERDANA_16BI).font
-
-print(sf) # Verdana 16 bold italic - but I need the bbox for IMPACT_18
-
-x,y,w,h = sf(IMPACT_18).bbox('Hello World')
-
-print(sf) # Impact 18 regular - but I need the options for HELVETICA_22
-
-options = sf(HELVETICA_22).options  # (regular, bold, italic, etc...)
-
-```
