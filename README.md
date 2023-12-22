@@ -96,4 +96,4 @@ options = sf(HELVETICA_22).options  # (regular, bold, italic, etc...)
 
 ```
 
-See get the point. Your constants are the font reference so, there is no reason to make multiple `Font` instances.
+You get the point. Your constants are the font reference so, there is no reason to make multiple `Font` instances.
