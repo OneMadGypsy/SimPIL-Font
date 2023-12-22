@@ -26,8 +26,8 @@ x2,y2,w2,h2 = sf.max_bbox("Goodbye World")
 img  = Image.new("RGB", (max(w1, w2), h1+h2), color="black")
 dctx = ImageDraw.Draw(img)
 
-dctx.text((x1, y1)   , "Hello World"  , font=djvu_32, fill="white")
-dctx.text((x1, h1+y2), "Goodbye World", font=djvu_27, fill="red")
+dctx.text((x1, y1), "Hello World"  , font=djvu_32, fill="white")
+dctx.text((x1, h1), "Goodbye World", font=djvu_27, fill="red")
 
 img.show()
 ```
