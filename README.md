@@ -86,11 +86,9 @@ helvetica_22 = sf(HELVETICA_22).font
 impact_18    = sf(IMPACT_18).font
 verdana_16bi = sf(VERDANA_16BI).font
 
-text = 'Hello World'
-
 #right now the font is 'Verdana 16 bold italic', but I need the bbox for 'Impact 18 regular'
 
-x,y,w,h = sf(IMPACT_18).bbox(text)
+x,y,w,h = sf(IMPACT_18).bbox('Hello World')
 
 ```
 
