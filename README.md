@@ -71,4 +71,27 @@ The absolute very first time you ever import `simpilfont`, it will create a `./d
 
 You can use partial font descriptions. You shouldn't view font requests as a fresh request. You should always view it as modifying what is already there. For instance, every `Font` instance starts as `Arial 12` - if you request `Helvetica`, you will have `Helvetica 12`. This is an important thing to remember. What if you requested `DejaVu Sans 22 condensed bold oblique`, and then made a new request for `Impact 18` ~ what you really have is `Impact 18 condensed bold oblique`. That isn't going to exist. My system would catch that error and end up defaulting to `Impact 18 regular`, but know that you would actually be making a bad request. Any part of a font can be changed with a partial description.
 
+You can create multiple `Font` instances, but there is no good reason to. The `Font` class is the front-end to your database. It's dressed up real pretty like it's trying to be a font instance, but It's really EVERY font instance. Using the inline request method you can return anything you need to know about a font, including the font, and even the bbox methods for that font. 
 
+```
+import simpilfont as font
+
+HELVETICA_22 = 'Helvetica 22 regular'
+IMPACT_18    = 'Impact 18 regular'
+VERDANA_16BI = 'Verdana 16 bold italic'
+
+sf = font.Font()
+
+helvetica_22 = sf(HELVETICA_22).font
+impact_18    = sf(IMPACT_18).font
+verdana_16bi = sf(VERDANA_16BI).font
+
+text = 'Hello World'
+
+#right now the font is 'Verdana 16 bold italic', but I need the bbox for 'Impact 18 regular'
+
+x,y,w,h = sf(IMPACT_18).bbox(text)
+
+```
+
+See how that works? Your fonts are actually your constants.
