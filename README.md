@@ -77,7 +77,7 @@ When you call `Font` with a `fontdirs` argument, this system checks the database
 
 The absolute very first time you ever import `simpilfont`, it will create a `./dat/` directory and put a database in it. It also creates a `./dat/fonts/` directory. Copy fonts to `./dat/fonts/`, and on the next run of `Font()`, they will be found and registered in the database. If you intend to go this route, you never have to use the `fontdirs` argument.
 
-font requests have the signature `"family size face"` ex: `"Verdana 16 bold italic"`. A full font request will include all of these parts, including `"regular"` when you do not want a modified face. Let's look at what can happen when you don't consider this.
+A font request has the signature `"family size face"` ex: `"Verdana 16 bold italic"`. A full font request will include all of these parts. Let's look at what can happen when you don't consider this.
 
 ```python3
 import simpilfont as font
@@ -96,7 +96,7 @@ print(sf('condensed bold oblique')) # 'DejaVu Sans 12 condensed bold oblique'
 print(sf('Impact 18 regular'))      # 'Impact 18 regular'
 ```
 
-You can create multiple `Font` instances, but there is no good reason to. Using the inline request method you can toggle between any available font.
+You can create multiple `Font` instances, but there is no good reason to. Using the inline request method you can toggle between any available font. `Font` isn't really a "font" instance. It's the front-end to the database. When you send a "font request", you're really saying - Find the "family" entry in the database, look for the "face" field. if it exists, return it's value (the font file path), if not, gimme something else ("regular", "book", first available face) in that order.
 
 ```python3
 import simpilfont as font
