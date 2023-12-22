@@ -96,7 +96,7 @@ print(sf('condensed bold oblique')) # 'DejaVu Sans 12 condensed bold oblique'
 print(sf('Impact 18 regular'))      # 'Impact 18 regular'
 ```
 
-You can create multiple `Font` instances, but there is no good reason to. The `Font` class is the front-end to your database. It's dressed up real pretty like it's trying to be a font instance, but It's really EVERY font instance. Using the inline request method you can return anything you need to know about a font, including the font, and even the bbox methods for that font. 
+You can create multiple `Font` instances, but there is no good reason to. Using the inline request method you can toggle between any available font.
 
 ```python3
 import simpilfont as font
@@ -120,5 +120,3 @@ print(sf) # Impact 18 regular - but I need the options for HELVETICA_22
 options = sf(HELVETICA_22).options  # (regular, bold, italic, etc...)
 
 ```
-
-You get the point. Your constants are the font reference so, there is no reason to make multiple `Font` instances.
