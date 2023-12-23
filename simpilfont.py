@@ -1,3 +1,4 @@
+from __future__ import annotations
 from   glob    import iglob
 from   typing  import Iterable
 from   PIL     import ImageFont
@@ -31,13 +32,13 @@ class SimPILFont:
     def font(self) -> ImageFont.FreeTypeFont: 
         return self._font
         
-    def __init__(self, fontdirs:Iterable):
+    def __init__(self, fontdirs:Iterable) -> None:
         self._fontdirs = fontdirs if isinstance(fontdirs, list|tuple) else (fontdirs, )
         
     def __str__(self) -> str:
         return ' '.join((self._family, f'{self._size}', self._face))
         
-    def __call__(self, font:str, encoding:str='unic'):
+    def __call__(self, font:str, encoding:str='unic') -> SimPILFont:
         encoding = encoding if encoding in SimPILFont.ENCODINGS else 'unic'
         
         # get details
@@ -52,13 +53,14 @@ class SimPILFont:
         family, face = ' '.join(family), ' '.join(face)
         
         # use detail else nochange else default
-        self._family    = family or getattr(self, '_family', 'Arial')
-        self._size      = size   or getattr(self, '_size'  , 12)
+        self._family    = family or getattr(self, '_family', 'Arial'  )
+        self._size      = size   or getattr(self, '_size'  , 12       )
         self._face      = face   or getattr(self, '_face'  , 'regular')
         self._facetypes = []
         
         faces = dict()
         found = False
+        fam   = self._family.lower().replace(' ', '')
         
         # find font via family and face
         for directory in self._fontdirs:
@@ -70,11 +72,7 @@ class SimPILFont:
                 else  :
                     family, face = ttf.getname() 
                     
-                    #avoid capitalization and space issues
-                    fam1 = family.lower().replace(' ', '')
-                    fam2 = self._family.lower().replace(' ', '')
-                    
-                    if fam1 == fam2:
+                    if fam == family.lower().replace(' ', ''):
                         found = True
                         face  = face.lower()
                         self._facetypes.append(face)
