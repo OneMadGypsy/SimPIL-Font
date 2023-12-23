@@ -23,14 +23,14 @@ class SimPILFont:
     def path(self) -> str: 
         return self._path
         
-    @property
-    def font(self) -> ImageFont.FreeTypeFont: 
-        return self._font
-        
     @property # supported faces for the current font 
     def facetypes(self) -> tuple: 
         return tuple(self._facetypes)
            
+    @property
+    def font(self) -> ImageFont.FreeTypeFont: 
+        return self._font
+        
     def __init__(self, fontdirs:Iterable):
         self._fontdirs = fontdirs if isinstance(fontdirs, list|tuple) else (fontdirs, )
         
@@ -45,7 +45,9 @@ class SimPILFont:
         
         for part in font.split(' '):
             if part.isdigit(): size = int(part)
-            else             : (face, family)[part != part.lower()].append(part)
+            else: 
+                lower = part.lower()
+                (face, family)[part != lower].append(part)
                 
         family, face = ' '.join(family), ' '.join(face)
         
@@ -68,14 +70,16 @@ class SimPILFont:
                 else  :
                     family, face = ttf.getname() 
                     
-                    if (family != self._family) and found:
-                        break
+                    #avoid capitalization and space issues
+                    fam1 = family.lower().replace(' ', '')
+                    fam2 = self._family.lower().replace(' ', '')
                     
-                    if family == self._family:
+                    if fam1 == fam2:
                         found = True
                         face  = face.lower()
                         self._facetypes.append(face)
                         faces[face.replace(' ', '')] = fn
+                    elif found: break
                     
             if found: break
         else: 
