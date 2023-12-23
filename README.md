@@ -45,7 +45,7 @@ print(sf('Impact regular'))         # 'Impact 12 regular'
 
 #### Font Data
 
-`.family`, `.face`, `.size`, `.path`, `.faces`, `.encoding`, and `.font` are the only properties. None of these properties have a setter.
+`.family`, `.face`, `.size`, `.path`, `.faces`, and `.font`, are the only properties. None of these properties have a setter.
 
 ```python3
 from simpilfont import SimPILFont
@@ -60,7 +60,7 @@ HELVETICA_22 = 'Helvetica 22 regular'
 
 # ImageFont.FreeTypeFont instances
 impact_18    = sf(IMPACT_18).font
-symbol_16    = sf(SYMBOL, encoding="symb").font
+symbol_16    = sf(SYMBOL, encoding="symb").font  #encoding is always "unic" unless otherwise specified
 verdana_16bi = sf(VERDANA_16BI).font
 
 # the currently loaded font is...
@@ -79,7 +79,6 @@ path         = sf.path                   # "path/to/regular/helvetica.ttf"
 family       = sf.family                 # "Helvetica"
 face         = sf.face                   # "regular"
 size         = sf.size                   # 22
-enc          = sf.encoding               # "unic"
 ```
 
 #### BBox Variations
