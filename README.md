@@ -45,29 +45,41 @@ print(sf('Impact regular'))         # 'Impact 12 regular'
 
 #### Font Data
 
-`.family`, `.face`, `.size`, `.path`, `.options`, `.encoding`, and `.font` all return exactly what you would expect them to. `encoding` and `font` are the only 2 that can be set.
+`.family`, `.face`, `.size`, `.path`, `.faces`, `.encoding`, and `.font` are the only properties. None of these properties have a setter.
 
 ```python3
 from simpilfont import SimPILFont
 
 sf = SimPILFont('C:/Windows/Fonts/')
 
-HELVETICA_22 = 'Helvetica 22 regular'
+# font request constants
 IMPACT_18    = 'Impact 18 regular'
+SYMBOL_16    = 'Symbol 16 regular'
 VERDANA_16BI = 'Verdana 16 bold italic'
+HELVETICA_22 = 'Helvetica 22 regular'
 
-helvetica_22 = sf(HELVETICA_22).font
+# ImageFont.FreeTypeFont instances
 impact_18    = sf(IMPACT_18).font
+symbol_16    = sf(SYMBOL, encoding="symb").font
 verdana_16bi = sf(VERDANA_16BI).font
 
+# the currently loaded font is...
 print(sf) # Verdana 16 bold italic
 
+# load a different font and get some data
 x,y,w,h = sf(IMPACT_18).bbox('Hello World')
 
+# the currently loaded font is now...
 print(sf) # Impact 18 regular
 
-options = sf(HELVETICA_22).options  # ('regular', 'bold', 'italic', etc...)
-path    = sf.path                   # "path/to/regular/helvetica.ttf"
+#once you make a font request, the SimPILFont instance retains all of the metadata until you make a new font request
+helvetica_22 = sf(HELVETICA_22).font     # ImageFont.FreeTypeFont instance
+faces        = sf.faces                  # ('regular', 'bold', 'italic', etc...)
+path         = sf.path                   # "path/to/regular/helvetica.ttf"
+family       = sf.family                 # "Helvetica"
+face         = sf.face                   # "regular"
+size         = sf.size                   # 22
+enc          = sf.encoding               # "unic"
 ```
 
 #### BBox Variations
