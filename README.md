@@ -6,14 +6,14 @@ simplify loading remote fonts with PIL
 from PIL import Image, ImageDraw
 from simpilfont import SimPILFont
 
-#you can use a list|tuple of font directories
+# you can alternately use a list|tuple of font directories
 sf = SimPILFont('C:/Windows/Fonts/')
 
-#get ImageFont and dimensions of text
+# get ImageFont and dimensions of text
 djvu_32   = sf("DejaVu Sans 32 bold").font  #DejaVu Sans 32 bold
 _,_,w1,h1 = sf.max_bbox("Hello World")
 
-#get ImageFont and dimensions of text
+# get ImageFont and dimensions of text
 djvu_27   = sf('27 book').font              #DejaVu Sans 27 book
 _,_,w2,h2 = sf.max_bbox("Goodbye World")
 
@@ -60,7 +60,7 @@ HELVETICA_22 = 'Helvetica 22 regular'
 
 # ImageFont.FreeTypeFont instances
 impact_18    = sf(IMPACT_18).font
-symbol_16    = sf(SYMBOL, encoding="symb").font  #encoding is always "unic" unless otherwise specified
+symbol_16    = sf(SYMBOL, encoding="symb").font  # encoding is always "unic" unless otherwise specified
 verdana_16bi = sf(VERDANA_16BI).font
 
 # the currently loaded font is...
@@ -90,13 +90,13 @@ ttf = sf("Verdana 20 regular").font
 
 text = "Hello World"
 
-#proxy for ImageFont.truetype(...).getbbox(text)
+# proxy for ImageFont.truetype(...).getbbox(text)
 x1, y1, w1, h1 = sf.bbox(text)
 
-#the smallest possible bbox
+# the smallest possible bbox
 x2, y2, w2, h2 = sf.min_bbox(text)
 
-#(right/bottom) margins mirror (left/top) margins, respectively
+# (right/bottom) margins mirror (left/top) margins, respectively
 x3, y3, w3, h3 = sf.max_bbox(text)
 ```
 
