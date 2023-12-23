@@ -56,26 +56,20 @@ class SimPILFont:
     def faces(self) -> tuple:
         return tuple(self._faces)
            
-    @property #current ImageFont encoding
-    def encoding(self) -> str:
-        return self._encoding
-        
     @property #current ImageFont instance
     def font(self) -> ImageFont.FreeTypeFont:
         return self._font
         
     ## DUNDER
         
-    def __init__(self, fontdirs:Iterable, encoding:str="unic"):
+    def __init__(self, fontdirs:Iterable):
         self._fontdirs = fontdirs if isinstance(fontdirs, list|tuple) else (fontdirs, )
-        self._encoding = encoding if encoding in SimPILFont.ENCODINGS else 'unic'
         
     def __str__(self) -> str:
         return ' '.join((self._family, f'{self._size}', self._face))
         
-    def __call__(self, font:str, encoding:str|None=None):
-        enc            = encoding or self._encoding
-        self._encoding = enc if enc in SimPILFont.ENCODINGS else 'unic'
+    def __call__(self, font:str, encoding:str='unic'):
+        encoding = encoding if encoding in SimPILFont.ENCODINGS else 'unic'
         
         #get details
         family, face, size = SimPILFont.metadata(font)
@@ -121,7 +115,7 @@ class SimPILFont:
                 break
         
         self._path  = faces.get(face, '')        
-        self._font  = ImageFont.truetype(self._path, self._size, encoding=self._encoding)
+        self._font  = ImageFont.truetype(self._path, self._size, encoding=encoding)
         
         return self
         
@@ -140,3 +134,4 @@ class SimPILFont:
     def max_bbox(self, text:str) -> tuple:
         x, y, w, h = self._font.getbbox(text)
         return 0, 0, w+x, h+y
+
