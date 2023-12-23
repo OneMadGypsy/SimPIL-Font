@@ -46,7 +46,7 @@ print(sf('Impact regular'))         # 'Impact 12 regular'
 
 #### Font Data
 
-`.family`, `.face`, `.size`, `.path`, `.faces`, and `.font`, are the only properties. None of these properties have a setter.
+`.family`, `.face`, `.size`, `.path`, `.font`, and `.facetypes`, are the only properties. None of these properties have a setter.
 
 ```python3
 from simpilfont import SimPILFont
