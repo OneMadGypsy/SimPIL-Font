@@ -72,7 +72,7 @@ x,y,w,h = sf(IMPACT_18).bbox('Hello World')
 # the currently loaded font is now...
 print(sf) # Impact 18 regular
 
-#once you make a font request, the SimPILFont instance retains all of the metadata until you make a new font request
+# once you make a font request, the SimPILFont instance retains all of the metadata until you make a new font request
 helvetica_22 = sf(HELVETICA_22).font     # ImageFont.FreeTypeFont instance
 faces        = sf.faces                  # ('regular', 'bold', 'italic', etc...)
 path         = sf.path                   # "path/to/regular/helvetica.ttf"
