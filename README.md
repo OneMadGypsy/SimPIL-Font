@@ -1,6 +1,6 @@
 # SimPIL-Font
 
-This script attempts to solve the issue of how cumbersome fonts are with PIL. IMO, having a fonts directry local to my app, and/or specifying font by absolute path is a shitty system. I wanted something closer to a `tk` approach - where I stick in the family, and some modifiers, and be done with it. `SimPILFont` is the result.
+A simple `"Family size face"` request system for `PIL.ImageFont.truetype(...)` 
 
 ## Basic Usage
 ```python3
