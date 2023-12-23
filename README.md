@@ -30,7 +30,7 @@ del dctx
 
 #### Font Requests
 
-A font request has the signature `"family size face"` ex: `"Verdana 16 bold italic"`. Requests are explicit so, any part of a font can be changed. To be clearer, any part that you do not explicitly change, will not change.
+A font request has the signature `"family size face"` ex: `"Verdana 16 bold italic"`. Requests are explicit so, any part that you do not explicitly change, will not change.
 
 ```python3
 from simpilfont import SimPILFont
