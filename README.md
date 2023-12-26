@@ -44,12 +44,21 @@ print(sf('condensed bold oblique')) # 'DejaVu Sans 12 condensed bold oblique'
 print(sf('Impact regular'))         # 'Impact 12 regular'
 ```
 
+You can set the `encoding` kwarg of `PIL.ImageFont.truetype(encoding=...)` by supplying it to the font request. The encoding defaults to `unic`. Setting `encoding` in a font request does not persist to the next request. For information on supported encodings, see: https://pillow.readthedocs.io/en/stable/reference/ImageFont.html#PIL.ImageFont.truetype
+
+```python3
+from simpilfont import SimPILFont
+
+sf  = SimPILFont('C:/Windows/Fonts/')
+ttf = sf('Symbol 16 regular', encoding='symb').font
+```
+
 #### Font Data
 
 |property|description|default|
 |--------|-----------|-------|
 |`.family`| family name | "Arial"|
-|`.face` | face name | "" |
+|`.face` | face name | "regular" |
 |`.size` | font size | 12 |
 |`.path`| path to font file | No Default |
 |`.font`| ImageFont.FreeTypeFont instance| No Default |
@@ -61,24 +70,7 @@ from simpilfont import SimPILFont
 sf = SimPILFont('C:/Windows/Fonts/')
 
 # font request constants
-IMPACT_18    = 'Impact 18 regular'
-SYMBOL_16    = 'Symbol 16 regular'
-VERDANA_16BI = 'Verdana 16 bold italic'
 HELVETICA_22 = 'Helvetica 22 regular'
-
-# ImageFont.FreeTypeFont instances
-impact_18    = sf(IMPACT_18).font
-symbol_16    = sf(SYMBOL, encoding="symb").font  # encoding is always "unic" unless otherwise specified
-verdana_16bi = sf(VERDANA_16BI).font
-
-# the currently loaded font is...
-print(sf) # Verdana 16 bold italic
-
-# load a different font and get some data
-x,y,w,h = sf(IMPACT_18).bbox('Hello World')
-
-# the currently loaded font is now...
-print(sf) # Impact 18 regular
 
 # once you make a font request, the SimPILFont instance retains all of the metadata until you make a new font request
 helvetica_22 = sf(HELVETICA_22).font     # ImageFont.FreeTypeFont instance
