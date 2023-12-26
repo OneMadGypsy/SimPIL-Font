@@ -61,8 +61,8 @@ from simpilfont import SimPILFont
 sf = SimPILFont('C:/Windows/Fonts/')
 
 #printing always returns the font request as the "perfect" request 
-print(sf('De Javu Sans 16 extra light'))         # 'DejaVu Sans 16 extralight'
-print(sf.facetypes)                              # ('bold', 'bold oblique', 'extralight', 'oblique', 'book', 'condensed bold', 'condensed bold oblique', 'condensed oblique', 'condensed')
+print(sf('De Javu Sans 16 extra light')) # 'DejaVu Sans 16 extralight'
+print(sf.facetypes)                      # ('bold', 'bold oblique', 'extralight', 'oblique', 'book', 'condensed bold', 'condensed bold oblique', 'condensed oblique', 'condensed')
 ```
 
 ## Font Data
