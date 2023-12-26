@@ -60,7 +60,7 @@ from simpilfont import SimPILFont
 
 sf = SimPILFont('C:/Windows/Fonts/')
 
-#printing always returns the font request as the "perfect" version 
+#printing always returns the font request as the "perfect" request 
 print(sf('Dejavusans 16 condensedboldoblique'))   # 'DejaVu Sans 16 condensed bold oblique'
 print(sf('DejaVu Sans 16 extra light'))           # 'DejaVu Sans 16 extralight'
 print(sf('DejaVu Sans 16 regular').facetypes)     #('bold', 'bold oblique', 'extralight', 'oblique', 'book', 'condensed bold', 'condensed bold oblique', 'condensed oblique', 'condensed')
