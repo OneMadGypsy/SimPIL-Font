@@ -46,9 +46,7 @@ class SimPILFont:
         
         for part in font.split(' '):
             if part.isdigit(): size = int(part)
-            else: 
-                lower = part.lower()
-                (face, family)[part != lower].append(part)
+            else             : (face, family)[part != part.lower()].append(part)
                 
         family, face = ' '.join(family), ' '.join(face)
         
@@ -58,9 +56,7 @@ class SimPILFont:
         self._face      = face   or getattr(self, '_face'  , 'regular')
         self._facetypes = []
         
-        faces = dict()
-        found = False
-        fam   = self._family.lower().replace(' ', '')
+        faces, found, fam = dict(), False, self._family.lower().replace(' ', '')
         
         # find font via family and face
         for directory in self._fontdirs:
@@ -73,15 +69,19 @@ class SimPILFont:
                     family, face = ttf.getname() 
                     
                     if fam == family.lower().replace(' ', ''):
-                        found = True
-                        face  = face.lower()
+                        face, found  = face.lower(), True
+                        self._family = family
                         self._facetypes.append(face)
-                        faces[face.replace(' ', '')] = fn
+                        
+                        nwface = face.replace(' ', '')
+                        if nwface == self._face.replace(' ',''):
+                            self._face = face
+                            
+                        faces[nwface] = fn
                     elif found: break
                     
             if found: break
-        else: 
-            raise ValueError('No font for you!')
+        else: raise 
             
         # get best face
         options = tuple(faces)
@@ -116,4 +116,3 @@ class SimPILFont:
     def max_bbox(self, text:str) -> tuple:
         x, y, w, h = self._font.getbbox(text)
         return 0, 0, w+x, h+y
-
