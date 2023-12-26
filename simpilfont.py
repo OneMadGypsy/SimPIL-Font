@@ -10,33 +10,33 @@ class SimPILFont:
         
     @property
     def family(self) -> str: 
-        return self._family
+        return getattr(self, '_family', 'Arial')
         
     @property
     def face(self) -> str: 
-        return self._face
+        return getattr(self, '_face', 'regular')
         
     @property
     def size(self) -> int: 
-        return self._size
+        return getattr(self, '_size', 12)
         
     @property
     def path(self) -> str: 
-        return self._path
+        return getattr(self, '_path', None)
         
     @property # supported faces for the current font 
     def facetypes(self) -> tuple: 
-        return tuple(self._facetypes)
+        return tuple(getattr(self, '_facetypes', None))
            
     @property
     def font(self) -> ImageFont.FreeTypeFont: 
-        return self._font
+        return getattr(self, '_font', None)
         
     def __init__(self, fontdirs:Iterable) -> None:
         self._fontdirs = fontdirs if isinstance(fontdirs, list|tuple) else (fontdirs, )
         
     def __str__(self) -> str:
-        return ' '.join((self._family, f'{self._size}', self._face))
+        return ' '.join((self.family, f'{self.size}', self.face))
         
     def __call__(self, font:str, encoding:str='unic') -> SimPILFont:
         encoding = encoding if encoding in SimPILFont.ENCODINGS else 'unic'
