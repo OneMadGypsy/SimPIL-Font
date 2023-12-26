@@ -52,9 +52,9 @@ class SimPILFont:
         family, face = ' '.join(family), ' '.join(face)
         
         # use detail else nochange else default
-        self._family    = family or getattr(self, '_family', 'Arial'  )
-        self._size      = size   or getattr(self, '_size'  , 12       )
-        self._face      = face   or getattr(self, '_face'  , 'regular')
+        self._family    = family or self.family
+        self._size      = size   or self.size
+        self._face      = face   or self.face
         self._facetypes = []
         
         faces, found, fam = dict(), False, self._family.lower().replace(' ', '')
@@ -106,7 +106,6 @@ class SimPILFont:
         
     def export(self) -> None:
         out = []
-        
         for directory in self._fontdirs:
             for fn in iglob(fr'{directory}**/*.ttf', recursive=True):
                 fn = os.path.abspath(fn)
