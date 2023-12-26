@@ -73,9 +73,9 @@ print(sf('DejaVu Sans 16 regular').facetypes)     #('bold', 'bold oblique', 'ext
 |`.family`   | family name                    | "Arial"    |
 |`.face`     | face name                      | "regular"  |
 |`.size`     | font size                      | 12         |
-|`.path`     | path to font file              | No Default |
-|`.font`     | ImageFont.FreeTypeFont instance| No Default |
-|`.facetypes`| tuple of supported faces       | No Default |
+|`.path`     | path to font file              | None       |
+|`.font`     | ImageFont.FreeTypeFont instance| None       |
+|`.facetypes`| tuple of supported faces       | None       |
 
 ```python3
 from simpilfont import SimPILFont
