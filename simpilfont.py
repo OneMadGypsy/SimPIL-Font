@@ -4,6 +4,7 @@ from   typing  import Iterable
 from   PIL     import ImageFont
 import os
 
+
 class SimPILFont:
     # https://pillow.readthedocs.io/en/stable/reference/ImageFont.html#PIL.ImageFont.truetype
     ENCODINGS = "unic", "symb", "DOB", "ADBE", "ADBC", "armn", "sjis", "gb", "big5", "ans", "joha", "lat1"
@@ -103,6 +104,22 @@ class SimPILFont:
         # inline
         return self
         
+    def export(self) -> None:
+        out = []
+        
+        for directory in self._fontdirs:
+            for fn in iglob(fr'{directory}**/*.ttf', recursive=True):
+                fn = os.path.abspath(fn)
+                
+                try   : ttf = ImageFont.truetype(font=fn)
+                except: ...
+                else  :
+                    family, face = ttf.getname() 
+                    out.append(f'{family} {face.lower()}')
+                    
+        with open('fonts.json', 'w') as f:
+            f.write(__import__('json').dumps(out, indent=4))
+                    
     # basic bbox
     def bbox(self, text:str) -> tuple:
         return self._font.getbbox(text)
