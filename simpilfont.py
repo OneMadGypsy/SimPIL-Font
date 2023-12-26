@@ -8,6 +8,7 @@ import os
 class SimPILFont:
     # https://pillow.readthedocs.io/en/stable/reference/ImageFont.html#PIL.ImageFont.truetype
     ENCODINGS = "unic", "symb", "DOB", "ADBE", "ADBC", "armn", "sjis", "gb", "big5", "ans", "joha", "lat1"
+    EXCEPTION = 'No font. You may be using the wrong encoding for this font. The default is "unic".'
         
     @property
     def family(self) -> str: 
@@ -64,7 +65,7 @@ class SimPILFont:
             for fn in iglob(fr'{directory}**/*.ttf', recursive=True):
                 fn = os.path.abspath(fn)
                 
-                try   : ttf = ImageFont.truetype(font=fn)
+                try   : ttf = ImageFont.truetype(font=fn, encoding=encoding)
                 except: ...
                 else  :
                     family, face = ttf.getname() 
@@ -82,7 +83,7 @@ class SimPILFont:
                     elif found: break
                     
             if found: break
-        else: raise 
+        else: raise Exception(SimPILFont.EXCEPTION)
             
         # get best face
         options = tuple(faces)
@@ -104,13 +105,14 @@ class SimPILFont:
         # inline
         return self
         
-    def export(self) -> None:
+    def export(self, encoding:str='unic') -> None:
+        encoding = encoding if encoding in SimPILFont.ENCODINGS else 'unic'
         out = []
         for directory in self._fontdirs:
             for fn in iglob(fr'{directory}**/*.ttf', recursive=True):
                 fn = os.path.abspath(fn)
                 
-                try   : ttf = ImageFont.truetype(font=fn)
+                try   : ttf = ImageFont.truetype(font=fn, encoding=encoding)
                 except: ...
                 else  :
                     family, face = ttf.getname() 
