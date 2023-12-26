@@ -105,18 +105,20 @@ class SimPILFont:
         # inline
         return self
         
-    def export(self, encoding:str='unic') -> None:
-        encoding = encoding if encoding in SimPILFont.ENCODINGS else 'unic'
-        out = []
+    def export(self) -> None:
+        out = {k:[] for k in SimPILFont.ENCODINGS}
+        
         for directory in self._fontdirs:
             for fn in iglob(fr'{directory}**/*.ttf', recursive=True):
                 fn = os.path.abspath(fn)
                 
-                try   : ttf = ImageFont.truetype(font=fn, encoding=encoding)
-                except: ...
-                else  :
-                    family, face = ttf.getname() 
-                    out.append(f'{family} {face.lower()}')
+                for enc in SimPILFont.ENCODINGS:
+                    try   : ttf = ImageFont.truetype(font=fn, encoding=enc)
+                    except: ...
+                    else  :
+                        family, face = ttf.getname() 
+                        out[enc].append(f'{family} {face.lower()}')
+                        break
                     
         with open('fonts.json', 'w') as f:
             f.write(__import__('json').dumps(out, indent=4))
