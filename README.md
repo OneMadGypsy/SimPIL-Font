@@ -93,6 +93,15 @@ face         = sf.face                   # "regular"
 size         = sf.size                   # 22
 ```
 
+You can call `.export()` to save a json list of all found fonts.
+
+```python3
+from simpilfont import SimPILFont
+
+sf = SimPILFont('C:/Windows/Fonts/')
+sf.export() #saved to app_directory/fonts.json
+```
+
 ## BBox Variations
 ```python3
 from simpilfont import SimPILFont
