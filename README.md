@@ -46,7 +46,14 @@ print(sf('Impact regular'))         # 'Impact 12 regular'
 
 #### Font Data
 
-`.family`, `.face`, `.size`, `.path`, `.font`, and `.facetypes`, are the only properties. None of these properties have a setter.
+|property|description|default|
+|--------|-----------|-------|
+|`.family`| family name | "Arial"|
+|`.face` | face name | "" |
+|`.size` | font size | 12 |
+|`.path`| path to font file | No Default |
+|`.font`| ImageFont.FreeTypeFont instance| No Default |
+|`.facetypes`| tuple of supported faces | No Default|
 
 ```python3
 from simpilfont import SimPILFont
