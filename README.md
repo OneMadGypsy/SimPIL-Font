@@ -44,7 +44,7 @@ print(sf('condensed bold oblique')) # 'DejaVu Sans 12 condensed bold oblique'
 print(sf('Impact regular'))         # 'Impact 12 regular'
 ```
 
-You can set the `encoding` kwarg of `PIL.ImageFont.truetype(encoding=...)` by supplying it to the font request. The encoding defaults to `unic`. Setting `encoding` in a font request does not persist to the next request. For information on supported encodings, see: https://pillow.readthedocs.io/en/stable/reference/ImageFont.html#PIL.ImageFont.truetype
+You can set the `encoding` kwarg of `PIL.ImageFont.truetype(..., encoding="unic")` by supplying it to the font request. The default is `unic`. Setting `encoding` in a font request will not persist to the next request. For information on supported encodings, see: https://pillow.readthedocs.io/en/stable/reference/ImageFont.html#PIL.ImageFont.truetype
 
 ```python3
 from simpilfont import SimPILFont
@@ -56,13 +56,13 @@ ttf = sf('Symbol 16 regular', encoding='symb').font
 #### Font Data
 
 |property|description|default|
-|--------|-----------|-------|
-|`.family`| family name | "Arial"|
-|`.face` | face name | "regular" |
-|`.size` | font size | 12 |
-|`.path`| path to font file | No Default |
-|`.font`| ImageFont.FreeTypeFont instance| No Default |
-|`.facetypes`| tuple of supported faces | No Default|
+|------------|--------------------------------|------------|
+|`.family`   | family name                    | "Arial"    |
+|`.face`     | face name                      | "regular"  |
+|`.size`     | font size                      | 12         |
+|`.path`     | path to font file              | No Default |
+|`.font`     | ImageFont.FreeTypeFont instance| No Default |
+|`.facetypes`| tuple of supported faces       | No Default |
 
 ```python3
 from simpilfont import SimPILFont
