@@ -28,7 +28,7 @@ img.show()
 del dctx
 ```
 
-#### Font Requests
+## Font Requests
 
 A font request has the signature `"family size face"` ex: `"Verdana 16 bold italic"`. Requests are explicit so, any part that you do not explicitly change, will not change.
 
@@ -53,7 +53,7 @@ sf  = SimPILFont('C:/Windows/Fonts/')
 ttf = sf('Symbol 16 regular', encoding='symb').font
 ```
 
-#### Font Data
+## Font Data
 
 |property|description|default|
 |------------|--------------------------------|------------|
@@ -81,7 +81,7 @@ face         = sf.face                   # "regular"
 size         = sf.size                   # 22
 ```
 
-#### BBox Variations
+## BBox Variations
 ```python3
 from simpilfont import SimPILFont
 
