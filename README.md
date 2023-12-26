@@ -85,6 +85,7 @@ sf = SimPILFont('C:/Windows/Fonts/')
 HELVETICA_22 = 'Helvetica 22 regular'
 
 # once you make a font request, the SimPILFont instance retains all of the metadata until you make a new font request
+# all properties are read-only. A font request is the only way to affect these properties.
 helvetica_22 = sf(HELVETICA_22).font     # ImageFont.FreeTypeFont instance
 faces        = sf.facetypes              # ('regular', 'bold', 'italic', etc...)
 path         = sf.path                   # "path/to/regular/helvetica.ttf"
