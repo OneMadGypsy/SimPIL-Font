@@ -93,7 +93,7 @@ face         = sf.face                   # "regular"
 size         = sf.size                   # 22
 ```
 
-You can call `.export()` to save a json list of all found fonts.
+You can call `.export()` to save a json list of all found fonts as "perfect", sizeless, font requests.
 
 ```python3
 from simpilfont import SimPILFont
