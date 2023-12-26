@@ -53,6 +53,18 @@ sf  = SimPILFont('C:/Windows/Fonts/')
 ttf = sf('Symbol 16 regular', encoding='symb').font
 ```
 
+The family name is parsed based on it containing capital letters, and the face name is parsed based on it being all lowercase. However, at the very root, all font request parts have `.lower().replace(' ','')` applied to them. As long as you mind the rules you can make some mistakes.
+
+```python3
+from simpilfont import SimPILFont
+
+sf = SimPILFont('C:/Windows/Fonts/')
+
+#printing always returns the font request as the "perfect" version 
+print(sf('Dejavusans 16 condensedboldoblique'))  # 'DejaVu Sans 16 condensed bold oblique'
+print(sf('DejaVu Sans 16 extra light'))          # 'DejaVu Sans 16 extralight'
+```
+
 ## Font Data
 
 |property|description|default|
