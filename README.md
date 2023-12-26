@@ -107,6 +107,9 @@ from simpilfont import SimPILFont
 
 sf = SimPILFont('C:/Windows/Fonts/')
 sf.export() # saved to app_directory/fonts.json
+
+#exact same thing, but only one line
+(sf := SimPILFont('C:/Windows/Fonts/')).export()
 ```
 
 ## BBox Variations
