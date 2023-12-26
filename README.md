@@ -94,11 +94,11 @@ face         = sf.face                   # "regular"
 size         = sf.size                   # 22
 ```
 
-You can call `.export()` to save a json file with the below format. All possible encodings are included. This can come in very handy if you want an overview of all the available fonts, and their encoding.
+You can call `.export()` to save a json file with the below format. All possible encodings are included. This can come in very handy if you want an overview of all the available font requests, and their encoding.
 ```json
 {
-    'unic': ["unic font", "unic font", "unic font"],
-    'symb': ["symb font", "symb font", "symb font"],
+    "unic": ["font request", "font request", "font request"],
+    "symb": ["font request", "font request", "font request"],
 }
 ```
 
