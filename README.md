@@ -94,14 +94,19 @@ face         = sf.face                   # "regular"
 size         = sf.size                   # 22
 ```
 
-You can call `.export()` to save a json list of all found fonts as "perfect", sizeless, font requests.
+You can call `.export()` to save a json file with the below format. All possible encodings are included. This can come in very handy if you want an overview of all the available fonts, and their encoding.
+```json
+{
+    'unic': ["unic font", "unic font", "unic font"],
+    'symb': ["symb font", "symb font", "symb font"],
+}
+```
 
 ```python3
 from simpilfont import SimPILFont
 
 sf = SimPILFont('C:/Windows/Fonts/')
 sf.export()                # saved to app_directory/fonts.json
-sf.export(encoding="symb") # `encoding` is also supported
 ```
 
 ## BBox Variations
