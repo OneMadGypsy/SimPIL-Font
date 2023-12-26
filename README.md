@@ -100,7 +100,8 @@ You can call `.export()` to save a json list of all found fonts as "perfect", si
 from simpilfont import SimPILFont
 
 sf = SimPILFont('C:/Windows/Fonts/')
-sf.export() #saved to app_directory/fonts.json
+sf.export()                # saved to app_directory/fonts.json
+sf.export(encoding="symb") # `encoding` is also supported
 ```
 
 ## BBox Variations
