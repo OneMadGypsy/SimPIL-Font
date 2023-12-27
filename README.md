@@ -30,7 +30,7 @@ del dctx
 
 ## Font Requests
 
-A font request has the signature `"family size face"` ex: `"Verdana 16 bold italic"`. Requests are explicit so, any part that you do not explicitly change, will not change. Subsequent requests of a family will receive cached data that was memoized when the family was first requested. It actually doesn't matter what order these arguments are in. Technically, even this would work `"condensed DejaVu bold Sans 22 oblique"`. The only thing you can't rearrange is the order of names, `"Sans DejaVu"`, `"italic bold"`, etc., will fail. 
+A font request has the signature `"family size face"` ex: `"Verdana 16 bold italic"`. It doesn't matter what order these arguments are in. Requests are explicit so, any part that you do not explicitly change, will not change. Subsequent requests of a family will receive cached data that was memoized when the family was first requested. 
 
 ```python3
 from simpilfont import SimPILFont
@@ -53,7 +53,7 @@ sf  = SimPILFont('C:/Windows/Fonts/')
 ttf = sf('Symbol 16 regular', encoding='symb').font
 ```
 
-The family name is parsed based on it not being lowercase. The face name is parsed based on it being all lowercase. However, at the very root, all font request parts have `.lower().replace(' ','')` applied to them. As long as you mind the rules you can make some mistakes.
+Every part of the family name must include one or more capital letters. Every part of the face name must be entirely lowercase. As long as you mind the rules you can make some mistakes.
 
 ```python3
 from simpilfont import SimPILFont
