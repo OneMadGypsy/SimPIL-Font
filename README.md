@@ -30,7 +30,7 @@ del dctx
 
 ## Font Requests
 
-A font request has the signature `"family size face"` ex: `"Verdana 16 bold italic"`. Technically, the order doesn't matter. Requests are explicit so, any part that you do not explicitly change, will not change. Subsequent requests of a family will receive cached data that was memoized when the family was first requested. 
+A font request has the signature `"family size face"` ex: `"Verdana 16 bold italic"`. Technically, the order doesn't matter. Requests are explicit. Any part that you do not explicitly change, will not change. Subsequent requests for a family will receive cached data that was memoized when the family was first requested. 
 
 ```python3
 from simpilfont import SimPILFont
@@ -53,7 +53,7 @@ sf  = SimPILFont('C:/Windows/Fonts/')
 ttf = sf('Symbol 16 regular', encoding='symb').font
 ```
 
-Every part of the family name must include one or more capital letters. Every part of the face name must be entirely lowercase. As long as you mind the rules you can make some mistakes.
+Every part of `family.split(' ')` must include one or more capital letters. Every part of `face.split(' ')` must be entirely lowercase. As long as you mind the rules you can make some mistakes.
 
 ```python3
 from simpilfont import SimPILFont
