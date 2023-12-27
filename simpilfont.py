@@ -1,6 +1,6 @@
 from __future__ import annotations
 from glob       import iglob
-from typing     import Iterable
+from typing     import Iterable, Iterator
 from functools  import cache
 from PIL        import ImageFont
 import os, json
@@ -44,9 +44,9 @@ class SimPILFont:
     def __call__(self, font:str, encoding:str='unic') -> SimPILFont:
         encoding = encoding if encoding in SimPILFont.ENCODINGS else 'unic'
         
-        # get details
         family, face, size = [], [], 0
         
+        #parse font request
         for part in font.split(' '):
             if part.isdigit(): size = int(part)
             else             : (face, family)[part != part.lower()].append(part)
@@ -54,7 +54,7 @@ class SimPILFont:
         _family = (' '.join(family) or self.family).lower().replace(' ', '')
         _face   = (' '.join(face)   or self.face  ).replace(' ', '')
         
-        item    = self.__(_family, encoding)
+        item = self.__(_family, encoding)
             
         faces           = item['faces']
         self._family    = item['family']
@@ -76,12 +76,20 @@ class SimPILFont:
                 face       = options[0]
                 self._face = self._facetypes[0]
             
-        # get and use path
-        self._path = faces.get(face, '') 
+        # get and use path 
+        self._path = faces.get(face, '')
         self._font = ImageFont.truetype(self._path, self._size, encoding=item['encoding'])
         
         # inline
         return self
+    
+    def __enc(self, fn:string) -> tuple:
+        for encoding in SimPILFont.ENCODINGS:
+            try   : ttf = ImageFont.truetype(font=fn, encoding=encoding)
+            except: continue
+            else  :
+                family, face = ttf.getname() 
+                return encoding, family, face
     
     @cache
     def __(self, fam:str, encoding:str="unic") -> dict:
@@ -89,23 +97,14 @@ class SimPILFont:
         
         t_family, t_facetypes, t_faces  = fam, list(), dict()
         
-        # find font via family and face
+        # find all faces of a family
         for directory in self._fontdirs:
             for fn in iglob(fr'{directory}**/{fam[0:2]}*.ttf', recursive=True):
                 fn = os.path.abspath(fn)
                 
                 try   : ttf = ImageFont.truetype(font=fn, encoding=encoding)
-                except: 
-                    for enc in SimPILFont.ENCODINGS:
-                        try   : ttf = ImageFont.truetype(font=fn, encoding=enc)
-                        except: continue
-                        else  :
-                            encoding     = enc
-                            family, face = ttf.getname() 
-                            break
-                    else: continue
-                else:
-                    family, face = ttf.getname() 
+                except: encoding, family, face = self.__enc(fn)
+                else  : family, face = ttf.getname() 
                     
                 if fam == family.lower().replace(' ', ''):
                     face, found = face.lower(), True
@@ -127,20 +126,13 @@ class SimPILFont:
         
         for directory in self._fontdirs:
             for fn in iglob(fr'{directory}**/*.ttf', recursive=True):
-                fn = os.path.abspath(fn)
-                
-                for enc in SimPILFont.ENCODINGS:
-                    try   : ttf = ImageFont.truetype(font=fn, encoding=enc)
-                    except: continue
-                    else  :
-                        family, face = ttf.getname() 
-                        out[enc].append(f'{family} {face.lower()}')
-                        break
+                encoding, family, face = self.__enc(os.path.abspath(fn))
+                out[encoding].append(f'{family} {face.lower()}')
                     
         with open('fonts.json', 'w') as f:
             f.write(json.dumps(out, indent=4))
-        
-        # inline
+            
+        #inline method
         return self
                     
     # basic bbox
@@ -156,4 +148,3 @@ class SimPILFont:
     def max_bbox(self, text:str) -> tuple:
         x, y, w, h = self._font.getbbox(text)
         return 0, 0, w+x, h+y
-
