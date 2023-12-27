@@ -55,8 +55,7 @@ sf = SimPILFont('C:/Windows/Fonts/')
 print(sf('Verdana', '16', 'bold'))                  # 'Verdana 16 bold'
 print(sf('condensed bold oblique DejaVu Sans 22'))  # 'DejaVu Sans 22 condensed bold oblique'
 
-# technically, even this would actually work, it's a byproduct of my parse method. This wasn't intended and isn't recommended.
-# you cannot rearrange the order of an arguments parts, ie. "New Roman Times", "italic bold", etc., will fail.
+# technically, even this would work. it's an unintended byproduct of my parse method and is not a recommended format 
 print(sf('condensed DejaVu bold 22 oblique Sans'))  # 'DejaVu Sans 22 condensed bold oblique'
 ```
 
