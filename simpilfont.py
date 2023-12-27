@@ -46,7 +46,7 @@ class SimPILFont:
         family, face, size = [], [], 0
         
         #parse font request
-        for part in ' '.join(request).split(' '):
+        for part in ' '.join(map(str, request)).split(' '):
             if part.isdigit(): size = int(part)
             else             : (face, family)[part != part.lower()].append(part)
                 
