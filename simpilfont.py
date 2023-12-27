@@ -53,6 +53,7 @@ class SimPILFont:
                 
         _family = (' '.join(family) or self.family).lower().replace(' ', '')
         _face   = (' '.join(face)   or self.face  ).replace(' ', '')
+        
         item    = self.__(_family, encoding)
             
         faces           = item['faces']
@@ -77,7 +78,7 @@ class SimPILFont:
             
         # get and use path
         self._path = faces.get(face, '') 
-        self._font = ImageFont.truetype(self._path, self._size, encoding=encoding)
+        self._font = ImageFont.truetype(self._path, self._size, encoding=item['encoding'])
         
         # inline
         return self
@@ -94,24 +95,32 @@ class SimPILFont:
                 fn = os.path.abspath(fn)
                 
                 try   : ttf = ImageFont.truetype(font=fn, encoding=encoding)
-                except: ...
-                else  :
+                except: 
+                    for enc in SimPILFont.ENCODINGS:
+                        try   : ttf = ImageFont.truetype(font=fn, encoding=enc)
+                        except: continue
+                        else  :
+                            encoding     = enc
+                            family, face = ttf.getname() 
+                            break
+                    else: continue
+                else:
                     family, face = ttf.getname() 
                     
-                    if fam == family.lower().replace(' ', ''):
-                        face, found = face.lower(), True
-                        
-                        t_family = family  
-                        t_faces[face.replace(' ', '')] = fn
-                        t_facetypes.append(face)
+                if fam == family.lower().replace(' ', ''):
+                    face, found = face.lower(), True
+                    
+                    t_family = family  
+                    t_faces[face.replace(' ', '')] = fn
+                    t_facetypes.append(face)
                             
-                    elif found: break
+                elif found: break
                     
             if found: break
             
         else: raise Exception(SimPILFont.EXCEPTION)
         
-        return dict(family=t_family, facetypes=t_facetypes, faces=t_faces)
+        return dict(family=t_family, facetypes=t_facetypes, faces=t_faces, encoding=encoding)
         
     def export(self) -> None:
         out = {k:[] for k in SimPILFont.ENCODINGS}
@@ -122,7 +131,7 @@ class SimPILFont:
                 
                 for enc in SimPILFont.ENCODINGS:
                     try   : ttf = ImageFont.truetype(font=fn, encoding=enc)
-                    except: ...
+                    except: continue
                     else  :
                         family, face = ttf.getname() 
                         out[enc].append(f'{family} {face.lower()}')
