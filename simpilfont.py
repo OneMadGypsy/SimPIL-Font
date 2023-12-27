@@ -156,3 +156,4 @@ class SimPILFont:
     def max_bbox(self, text:str) -> tuple:
         x, y, w, h = self._font.getbbox(text)
         return 0, 0, w+x, h+y
+
