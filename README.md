@@ -32,7 +32,7 @@ del dctx
 
 ## Font Requests
 
-A font request has the signature `"family size face"` ex: `"Verdana 16 bold italic"`. Requests are explicit. Any part that you do not explicitly change, will not change. Subsequent requests for a family will receive cached data that was memoized when the family was first requested. Font encoding is determined internally. You never need to consider it
+A font request has the signature `"family size face"` ex: `"Verdana 16 bold italic"`. Requests are explicit. Any part that you do not explicitly change, will not change. Subsequent requests for a family will receive cached data that was memoized when the family was first requested. Font encoding is determined internally. You never need to consider it.
 
 ```python3
 from simpilfont import SimPILFont
@@ -100,7 +100,7 @@ face         = sf.face                   # "regular"
 size         = sf.size                   # 22
 ```
 
-You can call the inline `.export()` method to save a json file with the below format. All possible encodings are included. This can come in very handy if you want an overview of all the available font requests, and their proper encoding.
+You can call the inline `.export()` method to save a json file with the below format. All possible encodings are included. This may be useful if you want an overview of all the available font requests and/or their proper encoding.
 ```json
 {
     "unic": ["Family Name facetype", "Family Name facetype", "Family Name facetype"],
