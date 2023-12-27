@@ -47,7 +47,7 @@ print(sf('Impact regular'))         # 'Impact 12 regular'
 ```
 
 Font requests can also be formatted as `args`, and the order of your arguments, in either style font request, don't actually matter.
-```
+```python3
 from simpilfont import SimPILFont
 
 sf = SimPILFont('C:/Windows/Fonts/')
