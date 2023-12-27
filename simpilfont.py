@@ -9,7 +9,7 @@ import os, json
 class SimPILFont:
     # https://pillow.readthedocs.io/en/stable/reference/ImageFont.html#PIL.ImageFont.truetype
     ENCODINGS = "unic", "symb", "lat1", "DOB", "ADBE", "ADBC", "armn", "sjis", "gb", "big5", "ans", "joha"
-    EXCEPTION = 'No font. You may be using the wrong encoding for this font. The default is "unic".'
+    EXCEPTION = 'No font. You may be using the wrong encoding for this font. The default encoding is "unic".'
         
     @property
     def family(self) -> str: 
