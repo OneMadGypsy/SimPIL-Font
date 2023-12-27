@@ -5,19 +5,19 @@ A simple `"Family size face"` request system for `PIL.ImageFont.truetype(...)`.
 ## Basic Usage
 ```python3
 from PIL import Image, ImageDraw
-from simpilfont import SimPILFont
+from simpilfont import *
 
-# one or more paths to font directories as `args`
-sf = SimPILFont('C:/Windows/Fonts/', './fonts/')
+# instance with one or more paths to font directories
+sf = SimPILFont('C:/Windows/Fonts/', './fonts/')#.export()
 
 # get ImageFont and dimensions of text
 text_32   = "Hello World"
-djvu_32   = sf("DejaVu Sans 32 bold").font  #DejaVu Sans 32 bold
+djvu_32   = sf("DejaVu Sans", 32, "bold").font  # DejaVu Sans 32 bold
 _,_,w1,h1 = sf.max_bbox(text_32)
 
 # get ImageFont and dimensions of text
 text_27   = "Goodbye World"
-djvu_27   = sf("27 book").font              #DejaVu Sans 27 book
+djvu_27   = sf("27 book").font  # DejaVu Sans 27 book
 _,_,w2,h2 = sf.max_bbox(text_27)
 
 img  = Image.new("RGB", (max(w1, w2), h1+h2), color="black")
@@ -52,8 +52,8 @@ from simpilfont import SimPILFont
 
 sf = SimPILFont('C:/Windows/Fonts/')
 
-print(sf('Verdana', '16', 'bold'))                  # 'Verdana 16 bold'
-print(sf('condensed bold oblique DejaVu Sans 22'))  # 'DejaVu Sans 22 condensed bold oblique'
+print(sf('Verdana', 'bold', 16))  # 'Verdana 16 bold'
+print(sf('bold DejaVu Sans 22'))  # 'DejaVu Sans 22 bold'
 
 # technically, even this would work. it's an unintended byproduct of my parse method and is not a recommended format 
 print(sf('condensed DejaVu bold 22 oblique Sans'))  # 'DejaVu Sans 22 condensed bold oblique'
