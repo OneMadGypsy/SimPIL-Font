@@ -1,14 +1,14 @@
 # SimPIL-Font
 
-A simple `"Family size face"` request system for `PIL.ImageFont.truetype(...)` 
+A simple `"Family size face"` request system for `PIL.ImageFont.truetype(...)`. 
 
 ## Basic Usage
 ```python3
 from PIL import Image, ImageDraw
 from simpilfont import SimPILFont
 
-# you can alternately use a list|tuple of font directories
-sf = SimPILFont('C:/Windows/Fonts/')
+# if you only have one path you can use str
+sf = SimPILFont(('C:/Windows/Fonts/', './fonts/'))
 
 # get ImageFont and dimensions of text
 djvu_32   = sf("DejaVu Sans 32 bold").font  #DejaVu Sans 32 bold
@@ -30,7 +30,7 @@ del dctx
 
 ## Font Requests
 
-A font request has the signature `"family size face"` ex: `"Verdana 16 bold italic"`. Requests are explicit so, any part that you do not explicitly change, will not change.
+A font request has the signature `"family size face"` ex: `"Verdana 16 bold italic"`. Requests are explicit so, any part that you do not explicitly change, will not change. Subsequent requests of a family will receive cached data that was memoized when the family was first requested.
 
 ```python3
 from simpilfont import SimPILFont
