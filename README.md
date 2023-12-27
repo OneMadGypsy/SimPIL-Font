@@ -1,4 +1,4 @@
-# SimPIL-Font
+# SimPILFont
 
 A simple `"Family size face"` request system for `PIL.ImageFont.truetype(...)`. 
 
