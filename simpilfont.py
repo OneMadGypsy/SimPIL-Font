@@ -140,7 +140,7 @@ class SimPILFont:
         with open('fonts.json', 'w') as f:
             f.write(json.dumps(out, indent=4))
         
-        #inline method
+        # inline
         return self
                     
     # basic bbox
