@@ -32,7 +32,7 @@ del dctx
 
 ## Font Requests
 
-A font request has the signature `"family size face"` ex: `"Verdana 16 bold italic"`. Technically, the order doesn't matter. Requests are explicit. Any part that you do not explicitly change, will not change. Subsequent requests for a family will receive cached data that was memoized when the family was first requested. 
+A font request has the signature `"family size face"` ex: `"Verdana 16 bold italic"`. Requests are explicit. Any part that you do not explicitly change, will not change. Subsequent requests for a family will receive cached data that was memoized when the family was first requested. 
 
 ```python3
 from simpilfont import SimPILFont
@@ -46,13 +46,18 @@ print(sf('condensed bold oblique')) # 'DejaVu Sans 12 condensed bold oblique'
 print(sf('Impact regular'))         # 'Impact 12 regular'
 ```
 
-You can set the `encoding` kwarg of `PIL.ImageFont.truetype(..., encoding="unic")` by supplying it to the font request. The default is `unic`. Setting `encoding` in a font request will not persist to the next request. If the encoding is wrong `SimPILFont` will find the proper one. For information on supported encodings, see: [PIL.ImageFont.truetype](https://pillow.readthedocs.io/en/stable/reference/ImageFont.html#PIL.ImageFont.truetype)
-
-```python3
+Font requests can also be formatted as `args`, and the order of your arguments, in either style font request, don't actually matter.
+```
 from simpilfont import SimPILFont
 
-sf  = SimPILFont('C:/Windows/Fonts/')
-ttf = sf('Symbol 16 regular', encoding='symb').font
+sf = SimPILFont('C:/Windows/Fonts/')
+
+print(sf('Verdana', '16', 'bold'))                  # 'Verdana 16 bold'
+print(sf('condensed bold oblique DejaVu Sans 22'))  # 'DejaVu Sans 22 condensed bold oblique'
+
+# technically, even this would actually work, it's a byproduct of my parse method. This wasn't intended and isn't recommended.
+# you cannot rearrange the order of an arguments parts, ie. "New Roman Times", "italic bold", etc., will fail.
+print(sf('condensed DejaVu bold 22 oblique Sans'))  # 'DejaVu Sans 22 condensed bold oblique'
 ```
 
 Every part of `family.split(' ')` must include one or more capital letters. Every part of `face.split(' ')` must be entirely lowercase. As long as you mind the rules you can make some mistakes.
