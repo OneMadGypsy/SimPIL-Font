@@ -85,7 +85,8 @@ class SimPILFont:
     
     @cache
     def __(self, fam:str, encoding:str="unic") -> dict:
-        found = False
+        encoding = encoding if encoding in SimPILFont.ENCODINGS else 'unic'
+        found    = False
         
         t_family, t_facetypes, t_faces  = fam, list(), dict()
         
