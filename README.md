@@ -11,18 +11,20 @@ from simpilfont import SimPILFont
 sf = SimPILFont('C:/Windows/Fonts/', './fonts/')
 
 # get ImageFont and dimensions of text
+text_32   = "Hello World"
 djvu_32   = sf("DejaVu Sans 32 bold").font  #DejaVu Sans 32 bold
-_,_,w1,h1 = sf.max_bbox("Hello World")
+_,_,w1,h1 = sf.max_bbox(text_32)
 
 # get ImageFont and dimensions of text
+text_27   = "Goodbye World"
 djvu_27   = sf("27 book").font              #DejaVu Sans 27 book
-_,_,w2,h2 = sf.max_bbox("Goodbye World")
+_,_,w2,h2 = sf.max_bbox(text_27)
 
 img  = Image.new("RGB", (max(w1, w2), h1+h2), color="black")
 dctx = ImageDraw.Draw(img)
 
-dctx.text((0, 0) , "Hello World"  , font=djvu_32, fill="white")
-dctx.text((0, h1), "Goodbye World", font=djvu_27, fill="red")
+dctx.text((0, 0) , text_32, font=djvu_32, fill="white")
+dctx.text((0, h1), text_27, font=djvu_27, fill="red")
 
 img.show()
 del dctx
