@@ -35,8 +35,8 @@ class SimPILFont:
     def font(self) -> ImageFont.FreeTypeFont: 
         return getattr(self, '_font', None)
         
-    def __init__(self, fontdirs:Iterable) -> None:
-        self._fontdirs = fontdirs if isinstance(fontdirs, list|tuple) else (fontdirs, )
+    def __init__(self, *args) -> None:
+        self._fontdirs = args
         
     def __str__(self) -> str:
         return ' '.join((self.family, f'{self.size}', self.face))
