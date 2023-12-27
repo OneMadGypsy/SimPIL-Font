@@ -139,6 +139,9 @@ class SimPILFont:
                     
         with open('fonts.json', 'w') as f:
             f.write(json.dumps(out, indent=4))
+        
+        #inline method
+        return self
                     
     # basic bbox
     def bbox(self, text:str) -> tuple:
