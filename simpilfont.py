@@ -41,20 +41,18 @@ class SimPILFont:
     def __str__(self) -> str:
         return ' '.join((self.family, f'{self.size}', self.face))
         
-    def __call__(self, font:str, encoding:str='unic') -> SimPILFont:
-        encoding = encoding if encoding in SimPILFont.ENCODINGS else 'unic'
-        
+    def __call__(self, *request) -> SimPILFont:
         family, face, size = [], [], 0
         
         #parse font request
-        for part in font.split(' '):
+        for part in ' '.join(request).split(' '):
             if part.isdigit(): size = int(part)
             else             : (face, family)[part != part.lower()].append(part)
                 
         _family = (' '.join(family) or self.family).lower().replace(' ', '')
         _face   = (' '.join(face)   or self.face  ).replace(' ', '')
         
-        item = self.__(_family, encoding)
+        item = self.__(_family)
             
         faces           = item['faces']
         self._family    = item['family']
@@ -92,7 +90,7 @@ class SimPILFont:
                 return encoding, family, face
     
     @cache
-    def __(self, fam:str, encoding:str="unic") -> dict:
+    def __(self, fam:str) -> dict:
         found = False
         
         t_family, t_facetypes, t_faces  = fam, list(), dict()
@@ -102,9 +100,7 @@ class SimPILFont:
             for fn in iglob(fr'{directory}**/{fam[0:2]}*.ttf', recursive=True):
                 fn = os.path.abspath(fn)
                 
-                try   : ttf = ImageFont.truetype(font=fn, encoding=encoding)
-                except: encoding, family, face = self.__enc(fn)
-                else  : family, face = ttf.getname() 
+                encoding, family, face = self.__enc(fn)
                     
                 if fam == family.lower().replace(' ', ''):
                     face, found = face.lower(), True
