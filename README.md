@@ -15,7 +15,7 @@ djvu_32   = sf("DejaVu Sans 32 bold").font  #DejaVu Sans 32 bold
 _,_,w1,h1 = sf.max_bbox("Hello World")
 
 # get ImageFont and dimensions of text
-djvu_27   = sf('27 book').font              #DejaVu Sans 27 book
+djvu_27   = sf("27 book").font              #DejaVu Sans 27 book
 _,_,w2,h2 = sf.max_bbox("Goodbye World")
 
 img  = Image.new("RGB", (max(w1, w2), h1+h2), color="black")
