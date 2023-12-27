@@ -7,7 +7,7 @@ A simple `"Family size face"` request system for `PIL.ImageFont.truetype(...)`.
 from PIL import Image, ImageDraw
 from simpilfont import SimPILFont
 
-# instance with one or more paths to font directories
+# one or more paths to font directories as `args`
 sf = SimPILFont('C:/Windows/Fonts/', './fonts/')
 
 # get ImageFont and dimensions of text
