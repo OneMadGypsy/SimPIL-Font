@@ -32,7 +32,7 @@ del dctx
 
 ## Font Requests
 
-A font request has the signature `"family size face"` ex: `"Verdana 16 bold italic"`. Requests are explicit. Any part that you do not explicitly change, will not change. Subsequent requests for a family will receive cached data that was memoized when the family was first requested. 
+A font request has the signature `"family size face"` ex: `"Verdana 16 bold italic"`. Requests are explicit. Any part that you do not explicitly change, will not change. Subsequent requests for a family will receive cached data that was memoized when the family was first requested. Font encoding is determined internally. YOu never need to consider it
 
 ```python3
 from simpilfont import SimPILFont
