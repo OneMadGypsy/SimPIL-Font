@@ -1,7 +1,8 @@
 from __future__ import annotations
-from   glob    import iglob
-from   typing  import Iterable
-from   PIL     import ImageFont
+from glob       import iglob
+from typing     import Iterable
+from functools  import cache
+from PIL        import ImageFont
 import os
 
 
