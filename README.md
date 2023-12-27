@@ -30,7 +30,7 @@ del dctx
 
 ## Font Requests
 
-A font request has the signature `"family size face"` ex: `"Verdana 16 bold italic"`. It doesn't matter what order these arguments are in. Requests are explicit so, any part that you do not explicitly change, will not change. Subsequent requests of a family will receive cached data that was memoized when the family was first requested. 
+A font request has the signature `"family size face"` ex: `"Verdana 16 bold italic"`. Technically, the order doesn't matter. Requests are explicit so, any part that you do not explicitly change, will not change. Subsequent requests of a family will receive cached data that was memoized when the family was first requested. 
 
 ```python3
 from simpilfont import SimPILFont
