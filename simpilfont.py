@@ -9,7 +9,8 @@ import os, json
 class SimPILFont:
     # https://pillow.readthedocs.io/en/stable/reference/ImageFont.html#PIL.ImageFont.truetype
     ENCODINGS = "unic", "symb", "lat1", "DOB", "ADBE", "ADBC", "armn", "sjis", "gb", "big5", "ans", "joha"
-    EXCEPTION = 'No font. You may be using the wrong encoding for this font. The default encoding is "unic".'
+    EXCEPTION = ("requested font family does not exist or cannot be encoded.\n"
+                 "call sf.export(), and check the created/updated 'fonts.json' for your font")
         
     @property
     def family(self) -> str: 
@@ -59,29 +60,31 @@ class SimPILFont:
         self._facetypes = item['facetypes']
         self._size      = size or self.size
         
-        for ft in self._facetypes:
-            if _face == (face := ft.replace(' ', '')):
-                self._face = ft
+        # set face
+        for _ in self._facetypes:
+            if _face == _.replace(' ', ''):
+                self._face = _
                 break
         else:
             options = tuple(faces)
             
-            for face in ('regular', 'book'):
-                if face in options: 
-                    self._face = face
+            for _ in ('regular', 'book'):
+                if _ in options: 
+                    self._face = _
                     break
             else: 
-                face       = options[0]
                 self._face = self._facetypes[0]
             
         # get and use path 
-        self._path = faces.get(face, '')
+        _face      = self._face.replace(' ', '')
+        self._path = faces.get(_face, '')
         self._font = ImageFont.truetype(self._path, self._size, encoding=item['encoding'])
         
         # inline
         return self
     
     def __enc(self, fn:string) -> tuple:
+        #whack-a-mole
         for encoding in SimPILFont.ENCODINGS:
             try   : ttf = ImageFont.truetype(font=fn, encoding=encoding)
             except: continue
@@ -128,7 +131,7 @@ class SimPILFont:
         with open('fonts.json', 'w') as f:
             f.write(json.dumps(out, indent=4))
             
-        #inline method
+        # inline
         return self
                     
     # basic bbox
