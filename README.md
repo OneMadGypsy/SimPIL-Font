@@ -113,8 +113,7 @@ sf.export() # saved to app_directory/fonts.json
 ```python3
 from simpilfont import SimPILFont
 
-sf  = SimPILFont('C:/Windows/Fonts/')
-ttf = sf("Verdana 20 regular").font
+sf  = SimPILFont('C:/Windows/Fonts/')("Verdana 20 regular")
 
 text = "Hello World"
 
