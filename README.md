@@ -113,8 +113,8 @@ sf = SimPILFont('C:/Windows/Fonts/').export()    # saved to app_directory/fonts.
 ```python3
 from simpilfont import SimPILFont
 
-# you can use this shortcut, if you want to instance SimPILFont and request a "start-up" font
-# this makes more sense if you only intend to use one font, like this example
+# you can use this shortcut if you want to instance SimPILFont and request a "start-up" font
+# this makes more sense if you only intend to use one font - like this example
 sf  = SimPILFont('C:/Windows/Fonts/')("Verdana 20 regular")
 
 text = "Hello World"
