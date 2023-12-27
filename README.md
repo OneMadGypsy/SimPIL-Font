@@ -7,8 +7,8 @@ A simple `"Family size face"` request system for `PIL.ImageFont.truetype(...)`.
 from PIL import Image, ImageDraw
 from simpilfont import SimPILFont
 
-# if you only have one path you can use str
-sf = SimPILFont(('C:/Windows/Fonts/', './fonts/'))
+# instance with one or more paths to font directories
+sf = SimPILFont('C:/Windows/Fonts/', './fonts/')
 
 # get ImageFont and dimensions of text
 djvu_32   = sf("DejaVu Sans 32 bold").font  #DejaVu Sans 32 bold
