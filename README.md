@@ -94,7 +94,7 @@ face         = sf.face                   # "regular"
 size         = sf.size                   # 22
 ```
 
-You can call `.export()` to save a json file with the below format. All possible encodings are included. This can come in very handy if you want an overview of all the available font requests, and their proper encoding.
+You can call he inline `.export()` method to save a json file with the below format. All possible encodings are included. This can come in very handy if you want an overview of all the available font requests, and their proper encoding.
 ```json
 {
     "unic": ["Family Name facetype", "Family Name facetype", "Family Name facetype"],
@@ -105,8 +105,8 @@ You can call `.export()` to save a json file with the below format. All possible
 ```python3
 from simpilfont import SimPILFont
 
-sf = SimPILFont('C:/Windows/Fonts/')
-sf.export() # saved to app_directory/fonts.json
+#export returns the SimPILFont instance
+sf = SimPILFont('C:/Windows/Fonts/').export()    # saved to app_directory/fonts.json
 ```
 
 ## BBox Variations
