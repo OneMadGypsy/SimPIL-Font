@@ -44,7 +44,7 @@ print(sf('condensed bold oblique')) # 'DejaVu Sans 12 condensed bold oblique'
 print(sf('Impact regular'))         # 'Impact 12 regular'
 ```
 
-You can set the `encoding` kwarg of `PIL.ImageFont.truetype(..., encoding="unic")` by supplying it to the font request. The default is `unic`. Setting `encoding` in a font request will not persist to the next request. If you input the wrong encoding `SimPILFont` will figure out what the right one is. For information on supported encodings, see: [PIL.ImageFont.truetype](https://pillow.readthedocs.io/en/stable/reference/ImageFont.html#PIL.ImageFont.truetype)
+You can set the `encoding` kwarg of `PIL.ImageFont.truetype(..., encoding="unic")` by supplying it to the font request. The default is `unic`. Setting `encoding` in a font request will not persist to the next request. If the encoding is wrong `SimPILFont` will find the proper one. For information on supported encodings, see: [PIL.ImageFont.truetype](https://pillow.readthedocs.io/en/stable/reference/ImageFont.html#PIL.ImageFont.truetype)
 
 ```python3
 from simpilfont import SimPILFont
