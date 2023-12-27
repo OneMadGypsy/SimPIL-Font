@@ -3,7 +3,7 @@ from glob       import iglob
 from typing     import Iterable
 from functools  import cache
 from PIL        import ImageFont
-import os
+import os, json
 
 
 class SimPILFont:
