@@ -113,8 +113,8 @@ sf.export() # saved to app_directory/fonts.json
 ```python3
 from simpilfont import SimPILFont
 
-#if you only intend to use one font, you could do it like this
-#`sf` ends up being the same `sf` that it would have been without the font request
+# you can use this shortcut, if you want to instance SimPILFont and request a "start-up" font
+# this makes more sense if you only intend to use one font, like this example
 sf  = SimPILFont('C:/Windows/Fonts/')("Verdana 20 regular")
 
 text = "Hello World"
