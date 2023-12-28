@@ -1,6 +1,6 @@
 # SimPILFont
 
-A simple `"Family size face"` request system for `PIL.ImageFont.truetype(...)`. 
+A simple `"family size style"` request system for `PIL.ImageFont.truetype(...)`. 
 
 ## Basic Usage
 ```python3
@@ -33,7 +33,7 @@ del dctx
 
 ## Font Requests
 
-A font request has the signature `"family size face"` ex: `"Verdana 16 bold italic"`. Requests are explicit. Any part that you do not explicitly change, will not change. Subsequent requests for a family will receive cached data that was memoized when the family was first requested. Font encoding is determined internally. You never need to consider it.
+A font request has the signature `"family size style"` ex: `"Verdana 16 bold italic"`. Requests are explicit. Any part that you do not explicitly change, will not change. Subsequent requests for a family will receive cached data that was memoized when the family was first requested. Font encoding is determined internally. You never need to consider it.
 
 ```python3
 from simpilfont import SimPILFont
@@ -60,7 +60,7 @@ print(sf('bold DejaVu Sans 22'))  # 'DejaVu Sans 22 bold'
 print(sf('condensed DejaVu bold 22 oblique Sans'))  # 'DejaVu Sans 22 condensed bold oblique'
 ```
 
-Every part of `family.split(' ')` must include one or more capital letters. Every part of `face.split(' ')` must be entirely lowercase. As long as you mind the rules you can make some mistakes.
+Every part of `family.split(' ')` must include one or more capital letters. Every part of `style.split(' ')` must be entirely lowercase. As long as you mind the rules you can make some mistakes.
 
 ```python3
 from simpilfont import SimPILFont
@@ -69,7 +69,7 @@ sf = SimPILFont()
 
 #printing always returns the font request as the "perfect" request 
 print(sf('De Javu Sans 16 extra light')) # 'DejaVu Sans 16 extralight'
-print(sf.facetypes)                      # ('bold', 'bold oblique', 'extralight', 'oblique', 'book', 'condensed bold', 'condensed bold oblique', 'condensed oblique', 'condensed')
+print(sf.styles)                         # ('bold', 'bold oblique', 'extralight', 'oblique', 'book', 'condensed bold', 'condensed bold oblique', 'condensed oblique', 'condensed')
 ```
 
 ## Font Data
@@ -81,7 +81,7 @@ print(sf.facetypes)                      # ('bold', 'bold oblique', 'extralight'
 |`.size`  | font size                      | 12         |
 |`.path`  | path to font file              | None       |
 |`.font`  | ImageFont.FreeTypeFont instance| None       |
-|`.styles`| tuple of supported faces       | None       |
+|`.styles`| tuple of supported styles      | None       |
 
 ```python3
 from simpilfont import SimPILFont
@@ -94,18 +94,18 @@ HELVETICA_22 = 'Helvetica 22 regular'
 # once you make a font request, the SimPILFont instance retains all of the metadata until you make a new font request
 # a font request is the only way to affect these properties
 helvetica_22 = sf(HELVETICA_22).font  # ImageFont.FreeTypeFont instance
-faces        = sf.styles              # ('regular', 'bold', 'italic', etc...)
+styles       = sf.styles              # ('regular', 'bold', 'italic', etc...)
 path         = sf.path                # "path/to/regular/helvetica.ttf"
 family       = sf.family              # "Helvetica"
 style        = sf.style               # "regular"
 size         = sf.size                # 22
 ```
 
-You can call the inline `.export()` method to save a json file with the below format. All possible encodings are included. This may be useful if you want an overview of all the available font requests and/or their proper encoding.
+You can call the inline `.export()` method to save a json file with every "known" font categorized by it's encoding.
 ```json
 {
-    "unic": ["Family Name facetype", "Family Name facetype", "Family Name facetype"],
-    "symb": ["Family Name facetype", "Family Name facetype", "Family Name facetype"],
+    "unic": ["Family1 style", "Family2 style", "Family3 style"],
+    "symb": ["Family4 style", "Family5 style", "Family6 style"],
 }
 ```
 
