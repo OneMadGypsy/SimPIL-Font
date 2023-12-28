@@ -7,8 +7,9 @@ A simple `"Family size face"` request system for `PIL.ImageFont.truetype(...)`.
 from PIL import Image, ImageDraw
 from simpilfont import *
 
-# instance with one or more paths to font directories
-sf = SimPILFont('C:/Windows/Fonts/', './fonts/')#.export()
+# instance with zero or more paths to *non-obvios font directories
+#*platform specific font directories are already known
+sf = SimPILFont('./fonts', './some_other/fonts')#.export()
 
 # get ImageFont and dimensions of text
 text_32   = "Hello World"
@@ -37,7 +38,7 @@ A font request has the signature `"family size face"` ex: `"Verdana 16 bold ital
 ```python3
 from simpilfont import SimPILFont
 
-sf = SimPILFont('C:/Windows/Fonts/')
+sf = SimPILFont()
 
 print(sf('Verdana 16 bold'))        # 'Verdana 16 bold'
 print(sf('DejaVu Sans'))            # 'DejaVu Sans 16 bold'
@@ -50,7 +51,7 @@ Font requests can also be formatted as `args`, and the order of your arguments, 
 ```python3
 from simpilfont import SimPILFont
 
-sf = SimPILFont('C:/Windows/Fonts/')
+sf = SimPILFont()
 
 print(sf('Verdana', 'bold', 16))  # 'Verdana 16 bold'
 print(sf('bold DejaVu Sans 22'))  # 'DejaVu Sans 22 bold'
@@ -64,7 +65,7 @@ Every part of `family.split(' ')` must include one or more capital letters. Ever
 ```python3
 from simpilfont import SimPILFont
 
-sf = SimPILFont('C:/Windows/Fonts/')
+sf = SimPILFont()
 
 #printing always returns the font request as the "perfect" request 
 print(sf('De Javu Sans 16 extra light')) # 'DejaVu Sans 16 extralight'
@@ -73,31 +74,31 @@ print(sf.facetypes)                      # ('bold', 'bold oblique', 'extralight'
 
 ## Font Data
 
-| property   | description                    | default    |
-|------------|--------------------------------|------------|
-|`.family`   | family name                    | "Arial"    |
-|`.face`     | face name                      | "regular"  |
-|`.size`     | font size                      | 12         |
-|`.path`     | path to font file              | None       |
-|`.font`     | ImageFont.FreeTypeFont instance| None       |
-|`.facetypes`| tuple of supported faces       | None       |
+| property| description                    | default    |
+|---------|--------------------------------|------------|
+|`.family`| family name                    | "Arial"    |
+|`.style` | style name                     | "regular"  |
+|`.size`  | font size                      | 12         |
+|`.path`  | path to font file              | None       |
+|`.font`  | ImageFont.FreeTypeFont instance| None       |
+|`.styles`| tuple of supported faces       | None       |
 
 ```python3
 from simpilfont import SimPILFont
 
-sf = SimPILFont('C:/Windows/Fonts/')
+sf = SimPILFont()
 
 # font request constants
 HELVETICA_22 = 'Helvetica 22 regular'
 
 # once you make a font request, the SimPILFont instance retains all of the metadata until you make a new font request
 # a font request is the only way to affect these properties
-helvetica_22 = sf(HELVETICA_22).font     # ImageFont.FreeTypeFont instance
-faces        = sf.facetypes              # ('regular', 'bold', 'italic', etc...)
-path         = sf.path                   # "path/to/regular/helvetica.ttf"
-family       = sf.family                 # "Helvetica"
-face         = sf.face                   # "regular"
-size         = sf.size                   # 22
+helvetica_22 = sf(HELVETICA_22).font  # ImageFont.FreeTypeFont instance
+faces        = sf.styles              # ('regular', 'bold', 'italic', etc...)
+path         = sf.path                # "path/to/regular/helvetica.ttf"
+family       = sf.family              # "Helvetica"
+style        = sf.style               # "regular"
+size         = sf.size                # 22
 ```
 
 You can call the inline `.export()` method to save a json file with the below format. All possible encodings are included. This may be useful if you want an overview of all the available font requests and/or their proper encoding.
@@ -112,7 +113,7 @@ You can call the inline `.export()` method to save a json file with the below fo
 from simpilfont import SimPILFont
 
 #export returns the SimPILFont instance
-sf = SimPILFont('C:/Windows/Fonts/').export()    # saved to app_directory/fonts.json
+sf = SimPILFont().export()    # saved to app_directory/fonts.json
 ```
 
 ## BBox Variations
@@ -121,11 +122,11 @@ from simpilfont import SimPILFont
 
 # you can use this shortcut if you want to instance SimPILFont and request a "start-up" font
 # this makes more sense if you only intend to use one font - like this example
-sf  = SimPILFont('C:/Windows/Fonts/')("Verdana 20 regular")
+sf  = SimPILFont()("Verdana 20 regular")
 
 text = "Hello World"
 
-# proxy for ImageFont.truetype(...).getbbox(text)
+# proxy for ttf.getbbox(text)
 x1, y1, w1, h1 = sf.bbox(text)
 
 # the smallest possible bbox
