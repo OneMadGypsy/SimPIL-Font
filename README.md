@@ -48,6 +48,7 @@ print(sf('Impact regular'))         # 'Impact 12 regular'
 ```
 
 Font requests can also be formatted as `args`, and the order of your arguments, in either style font request, don't actually matter.
+
 ```python3
 from simpilfont import SimPILFont
 
@@ -101,13 +102,7 @@ style        = sf.style               # "regular"
 size         = sf.size                # 22
 ```
 
-You can call the inline `.export()` method to save a json file with every "known" font categorized by it's encoding.
-```json
-{
-    "unic": ["Family1 style", "Family2 style", "Family3 style"],
-    "symb": ["Family4 style", "Family5 style", "Family6 style"],
-}
-```
+You can call the inline `.export()` method to save a json file, containing all compatible fonts, categorized by their encoding.
 
 ```python3
 from simpilfont import SimPILFont
