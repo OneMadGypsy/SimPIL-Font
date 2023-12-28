@@ -13,12 +13,12 @@ sf = SimPILFont('./fonts', './some_other/fonts')#.export()
 
 # get ImageFont and dimensions of text
 text_32   = "Hello World"
-djvu_32   = sf("DejaVu Sans", 32, "bold").font  # DejaVu Sans 32 bold
+djvu_32   = sf("DejaVu Sans", 32, "bold").font  # 'DejaVu Sans 32 bold'
 _,_,w1,h1 = sf.max_bbox(text_32)
 
 # get ImageFont and dimensions of text
 text_27   = "Goodbye World"
-djvu_27   = sf("27 book").font  # DejaVu Sans 27 book
+djvu_27   = sf("27 book").font  # 'DejaVu Sans 27 book'
 _,_,w2,h2 = sf.max_bbox(text_27)
 
 img  = Image.new("RGB", (max(w1, w2), h1+h2), color="black")
