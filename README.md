@@ -8,7 +8,7 @@ from PIL import Image, ImageDraw
 from simpilfont import *
 
 # instance with zero or more paths to *non-obvious font directories
-#*platform specific font directories are already known
+#*platform-specific font directories are already known
 sf = SimPILFont('./fonts', './some_other/fonts')
 
 # get ImageFont and dimensions of text
