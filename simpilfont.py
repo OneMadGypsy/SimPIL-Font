@@ -3,7 +3,15 @@ from glob       import iglob
 from typing     import Iterable, Iterator
 from functools  import cache
 from PIL        import ImageFont
-import os, json
+import os, json, sys
+
+# common font directories for major systems
+SYSTEMDIRS = dict(
+    win32  = ('C:/Windows/Fonts', ),
+    linux  = ('/usr/share/fonts', '/usr/local/share/fonts', '~/.local/share/fonts'),
+    linux2 = ('/usr/share/fonts', '/usr/local/share/fonts', '~/.local/share/fonts'),
+    darwin = ('/Library/Fonts'  , "/System/Library/Fonts" , os.path.expanduser("~/Library/Fonts")),
+).get(sys.platform, [])
 
 
 class SimPILFont:
@@ -17,8 +25,8 @@ class SimPILFont:
         return getattr(self, '_family', 'Arial') or 'Arial'
         
     @property
-    def face(self) -> str: 
-        return getattr(self, '_face', 'regular') or 'regular'
+    def style(self) -> str: 
+        return getattr(self, '_style', 'regular') or 'regular'
         
     @property
     def size(self) -> int: 
@@ -28,56 +36,56 @@ class SimPILFont:
     def path(self) -> str: 
         return getattr(self, '_path', None)
         
-    @property # supported faces for the current font 
-    def facetypes(self) -> tuple: 
-        return tuple(getattr(self, '_facetypes', None))
+    @property # supported styles for the current font 
+    def styles(self) -> tuple: 
+        return tuple(getattr(self, '_styles', None))
            
     @property
     def font(self) -> ImageFont.FreeTypeFont: 
         return getattr(self, '_font', None)
         
     def __init__(self, *args) -> None:
-        self._fontdirs = args
+        self._fontdirs = tuple(set(map(os.path.abspath, args + SYSTEMDIRS)))
         
     def __str__(self) -> str:
-        return ' '.join((self.family, f'{self.size}', self.face))
+        return ' '.join((self.family, f'{self.size}', self.style))
         
     def __call__(self, *request) -> SimPILFont:
-        family, face, size = [], [], 0
+        family, style, size = [], [], 0
         
         #parse font request
         for part in ' '.join(map(str, request)).split(' '):
             if part.isdigit(): size = int(part)
-            else             : (face, family)[part != part.lower()].append(part)
+            else             : (style, family)[part != part.lower()].append(part)
                 
         _family = (' '.join(family) or self.family).lower().replace(' ', '')
-        _face   = (' '.join(face)   or self.face  ).replace(' ', '')
+        _style  = (' '.join(style)  or self.style ).replace(' ', '')
         
-        item = self.__(_family)
+        item = self.__get(_family)
             
-        faces           = item['faces']
-        self._family    = item['family']
-        self._facetypes = item['facetypes']
-        self._size      = size or self.size
+        faces        = item['faces']
+        self._family = item['family']
+        self._styles = item['styles']
+        self._size   = size or self.size
         
-        # set face
-        for _ in self._facetypes:
-            if _face == _.replace(' ', ''):
-                self._face = _
+        # set style
+        for _ in self._styles:
+            if _style == _.replace(' ', ''):
+                self._style = _
                 break
         else:
             options = tuple(faces)
             
             for _ in ('regular', 'book'):
                 if _ in options: 
-                    self._face = _
+                    self._style = _
                     break
             else: 
-                self._face = self._facetypes[0]
+                self._style = self._styles[0]
             
         # get and use path 
-        _face      = self._face.replace(' ', '')
-        self._path = faces.get(_face, '')
+        _style     = self._style.replace(' ', '')
+        self._path = faces.get(_style, '')
         self._font = ImageFont.truetype(self._path, self._size, encoding=item['encoding'])
         
         # inline
@@ -89,28 +97,28 @@ class SimPILFont:
             try   : ttf = ImageFont.truetype(font=fn, encoding=encoding)
             except: continue
             else  :
-                family, face = ttf.getname() 
-                return encoding, family, face
+                family, style = ttf.getname() 
+                return encoding, family, style
     
     @cache
-    def __(self, fam:str) -> dict:
+    def __get(self, fam:str) -> dict:
         found = False
         
-        t_family, t_facetypes, t_faces  = fam, list(), dict()
+        t_family, t_styles, t_faces  = fam, list(), dict()
         
-        # find all faces of a family
+        # find all styles of a family
         for directory in self._fontdirs:
             for fn in iglob(fr'{directory}**/{fam[0:2]}*.ttf', recursive=True):
                 fn = os.path.abspath(fn)
                 
-                encoding, family, face = self.__enc(fn)
+                encoding, family, style = self.__enc(fn)
                     
                 if fam == family.lower().replace(' ', ''):
-                    face, found = face.lower(), True
+                    style, found = style.lower(), True
                     
                     t_family = family  
-                    t_faces[face.replace(' ', '')] = fn
-                    t_facetypes.append(face)
+                    t_faces[style.replace(' ', '')] = fn
+                    t_styles.append(style)
                             
                 elif found: break
                     
@@ -118,15 +126,15 @@ class SimPILFont:
             
         else: raise Exception(SimPILFont.EXCEPTION)
         
-        return dict(family=t_family, facetypes=t_facetypes, faces=t_faces, encoding=encoding)
+        return dict(family=t_family, styles=t_styles, faces=t_faces, encoding=encoding)
         
     def export(self) -> None:
         out = {k:[] for k in SimPILFont.ENCODINGS}
         
         for directory in self._fontdirs:
             for fn in iglob(fr'{directory}**/*.ttf', recursive=True):
-                encoding, family, face = self.__enc(os.path.abspath(fn))
-                out[encoding].append(f'{family} {face.lower()}')
+                encoding, family, style = self.__enc(os.path.abspath(fn))
+                out[encoding].append(f'{family} {style.lower()}')
                     
         with open('fonts.json', 'w') as f:
             f.write(json.dumps(out, indent=4))
