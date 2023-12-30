@@ -5,7 +5,7 @@ A simple `"family size style"` request system for `PIL.ImageFont.truetype(...)`.
 ## Basic Usage
 ```python3
 from PIL import Image, ImageDraw
-from simpilfont import *
+from simpil import SimPILFont
 
 # instance with zero or more paths to *non-obvious font directories
 #  *platform-specific font directories are already known
@@ -36,7 +36,7 @@ del dctx
 A font request has the signature `"family size style"` ex: `"Verdana 16 bold italic"`. Requests are explicit. Any part that you do not explicitly change, will not change. Subsequent requests for a family will receive cached data that was memoized when the family was first requested. Font encoding is determined internally. You never need to consider it.
 
 ```python3
-from simpilfont import SimPILFont
+from simpil import SimPILFont
 
 sf = SimPILFont()
 
@@ -50,7 +50,7 @@ print(sf('Impact regular'))         # 'Impact 12 regular'
 Font requests can also be formatted as `args`, and the order of your arguments, in either style font request, don't actually matter.
 
 ```python3
-from simpilfont import SimPILFont
+from simpil import SimPILFont
 
 sf = SimPILFont()
 
@@ -64,7 +64,7 @@ print(sf('condensed DejaVu bold 22 oblique Sans'))  # 'DejaVu Sans 22 condensed 
 Every part of `family.split(' ')` must include one or more capital letters. Every part of `style.split(' ')` must be entirely lowercase. As long as you mind the rules you can make some mistakes.
 
 ```python3
-from simpilfont import SimPILFont
+from simpil import SimPILFont
 
 sf = SimPILFont()
 
@@ -85,7 +85,7 @@ print(sf.styles)                         # ('bold', 'bold oblique', 'extralight'
 |`.styles`| tuple of supported styles      | None       |
 
 ```python3
-from simpilfont import SimPILFont
+from simpil import SimPILFont
 
 sf = SimPILFont()
 
@@ -105,7 +105,7 @@ size         = sf.size                # 22
 You can call the inline `.export()` method to save a json file, containing all compatible fonts, categorized by their encoding.
 
 ```python3
-from simpilfont import SimPILFont
+from simpil import SimPILFont
 
 #export returns the SimPILFont instance
 sf = SimPILFont().export()    # saved to app_directory/fonts.json
@@ -113,7 +113,7 @@ sf = SimPILFont().export()    # saved to app_directory/fonts.json
 
 ## BBox Variations
 ```python3
-from simpilfont import SimPILFont
+from simpil import SimPILFont
 
 # you can use this shortcut if you want to instance SimPILFont and request a "start-up" font
 # this makes more sense if you only intend to use one font - like this example
