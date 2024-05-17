@@ -1,1 +1,0 @@
-from .font import Font as SimPILFont
