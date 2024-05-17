@@ -2,9 +2,13 @@
 
 A `"family size style"` request system for `PIL.ImageFont.truetype(...)`. 
 
+--------
+
 ## Installation
 to install `simpilfont` and it's `Pillow` dependency, open a terminal and input the following command:
 ### `pip install simpilfont`
+
+--------
 
 ## Basic Usage
 ```python3
